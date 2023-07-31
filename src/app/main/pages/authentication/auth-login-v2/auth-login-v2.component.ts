@@ -87,7 +87,7 @@ export class AuthLoginV2Component implements OnInit {
     this.loading = true;
     this._authenticationService
       .login(this.f.email.value, this.f.password.value)
-      .pipe(first())
+      // .pipe(first())
       .subscribe(
         data => {
           this._router.navigate([this.returnUrl]);

@@ -54,6 +54,9 @@ export class DatatablesComponent implements OnInit {
   public _snippetCodeCustomCheckbox = snippet.snippetCodeCustomCheckbox;
   public _snippetCodeResponsive = snippet.snippetCodeResponsive;
   public _snippetCodeMultilangual = snippet.snippetCodeMultilangual;
+  editId: any;
+  initial: any;
+  file: any;
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
@@ -138,19 +141,83 @@ export class DatatablesComponent implements OnInit {
     this.tableRowDetails.rowDetail.toggleExpandRow(row);
   }
 
-  modalOpenForm(modalForm) {
+  onFileSelected(event) {
+    if (event.target.files.length > 0) {
+      console.log(event.target.files[0]);
+      this.file = event.target.files[0]
+    }
+  }
+
+  modalOpenWarning(modalWarning, id?) {
+    this.modalService.open(modalWarning, {
+      centered: true,
+      windowClass: 'modal modal-warning'
+    });
+    if (id) {
+      this.editId = id
+    } else {
+      this.editId = 0
+    }
+  }
+
+  modalOpenForm(modalForm, row?) {
+    console.log(row)
+    if (row) {
+      this.initial = row
+      this.editId = row.id
+    } else {
+      this.initial = {}
+      this.editId = 0
+    }
+
     this.modalService.open(modalForm);
   }
 
-  submit(subjectName, description, filePath = '') {
-    // window.alert(subjectName + description)
-    new ItemsService().childPath('post', 'Topic/AddTopics', { subjectName, description, filePath }).then((e) => {
-      window.alert(e.data.message)
+  deleteData() {
+    console.log(this.editId)
+    new ItemsService().childPath('get', `Topic/DeleteTopics?id=${this.editId}`).then((e) => {
+      // window.alert(e.data.message)
       this.ngOnInit()
       this.modalService.dismissAll()
     })
-
   }
+
+  submit(data) {
+    // window.alert(subjectName + description)
+    console.log(data)
+    // return
+    console.log(this.editId, this.initial, data)
+    if (this.editId) {
+      let formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("id", this.editId.toString());
+      formData.append("topicName", data.topicName);
+      formData.append("description", data.description);
+      formData.append("filePath", data.filePath);
+      formData.append("isActive", data.isActive);
+      formData.append("isLock", data.isLock);
+      new ItemsService().childPath('post', 'Topic/UpdateTopics', formData).then((e) => {
+        // window.alert(e.data.message)
+        this.ngOnInit()
+        this.modalService.dismissAll()
+      })
+    } else {
+      let formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("topicName", data.topicName);
+      formData.append("description", data.description);
+      formData.append("filePath", data.filePath);
+      formData.append("isActive", data.isActive);
+      formData.append("isLock", data.isLock);
+      new ItemsService().childPath('post', 'Topic/AddTopics', formData).then((e) => {
+        // window.alert(e.data.message)
+        this.ngOnInit()
+        this.modalService.dismissAll()
+      })
+    }
+  }
+
+
 
 
   /**

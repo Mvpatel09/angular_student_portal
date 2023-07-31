@@ -6,20 +6,20 @@
     <!-- Kitchen Sink Datatables -->
     <section id="ngx-datatable-kitchen-sink">
       <!-- <core-card-snippet [snippetCode]="_snippetCodeKitchenSink"> -->
-      <h4 class="card-title">Chapters</h4>
+      <h4 class="card-title">Subjects</h4>
       <div class="row">
         <div class="col-12 mb-50">
           <button class="btn btn-primary ml-1" rippleEffect (click)="modalOpenForm(modalForm)">
             <ng-template #modalForm let-modal>
               <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel1">Add Chapter</h4>
+                <!-- <h4 class="modal-title" id="myModalLabel1">Add Chapter</h4> -->
                 <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body" tabindex="0" ngbAutofocus>
-                <form>
-                  <label>Chapter Name</label>
+                <form #userlogin="ngForm" (ngSubmit)="submit(userlogin.value)">
+                  <label>Subject Name</label>
                   <div class="form-group">
                     <input id="subjectName" [(ngModel)]="initial.subjectName" name="subjectName" #subjectName
                       type="text" placeholder="" class="form-control" />
@@ -29,13 +29,33 @@
                     <input id="description" [(ngModel)]="initial.description" name="description" #description
                       type="text" placeholder="" class="form-control" />
                   </div>
+                  <label>Active</label>
+                  <div class="form-group">
+                    <label>
+                      <input type="radio" [(ngModel)]="initial.isActive" [value]=true name="isActive"
+                        #genderControl="ngModel">
+                      Yes
+                    </label>
+                    <label>
+                      <input type="radio" [(ngModel)]="initial.isActive" [value]=false name="isActive"
+                        #genderControl="ngModel">
+                      No
+                    </label>
+                  </div>
+                  <label>File Path </label>
+                  <div class="form-group">
+                    <input id="filePath" [(ngModel)]="initial.filePath" name="filePath" #filePath type="text"
+                      placeholder="" class="form-control" />
+                  </div>
+                  <label>File</label>
+                  <div class="form-group">
+                    <input id="file" (change)="onFileSelected($event)" [(ngModel)]="initial.file" name="file" #filePath
+                      type="file" placeholder="" class="form-control" />
+                  </div>
+                  <button type="submit" class="btn btn-primary" rippleEffect>
+                    Submit
+                  </button>
                 </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="submit(subjectName.value,description.value)"
-                  rippleEffect>
-                  Submit
-                </button>
               </div>
             </ng-template>
             <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add New Record</span>
@@ -167,26 +187,15 @@
         <ngx-datatable-column name="description" prop="description" [width]="250"></ngx-datatable-column>
         <ngx-datatable-column name="filePath" prop="filePath" [width]="120"></ngx-datatable-column>
         <ngx-datatable-column name="Status" prop="isActive" [width]="120">
-          <ng-template let-status="value" ngx-datatable-cell-template>
+          <ng-template let-isActive="value" ngx-datatable-cell-template>
             <div class="badge badge-pill" [ngClass]="{
-                  'badge-light-primary': isActive == '1',
-                  'badge-light-success': isActive == '2',
-                  'badge-light-danger': isActive == '3',
-                  'badge-light-warning': isActive == '4',
-                  'badge-light-info': isActive == null
+                  'badge-light-success': isActive != false,
+                  'badge-light-danger': isActive == false
                 }">
               {{
-              isActive == 1
-              ? 'Current'
-              : isActive == 2
-              ? 'Professional'
-              : isActive == 3
-              ? 'Rejected'
-              : isActive == 4
-              ? 'Resigned'
-              : isActive == null
-              ? 'Applied'
-              : 'Applied'
+              isActive != false
+              ? 'Active'
+              : 'Inactive'
               }}
             </div>
           </ng-template>

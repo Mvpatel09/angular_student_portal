@@ -17,7 +17,7 @@ export class ItemsService {
             url: this.baseURL + args,
             data: data,
             headers: {
-                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdHVkeSIsImp0aSI6IjY4YTI1MDBjLTBkODQtNDY0My04OGUwLTg2MDJiMmU3YzcwMSIsImlhdCI6IjcvMjkvMjAyMyAxMjoxODoyNCBQTSIsIlVzZXJJZCI6IjEiLCJVc2VyTmFtZSI6ImFkbWluIiwiZXhwIjoxNjkwNjM2NzA0LCJpc3MiOiJ3d3cuc3R1ZHkuaW4iLCJhdWQiOiJ3d3cuc3R1ZHkuaW4ifQ.2bo1j0oxR9H5wi0P5_8eZqqK0zBARU33yiXu8-gM-t4"
+                Authorization: `Bearer ${window.localStorage.getItem('token')}`
             }
         })
     }

@@ -21,14 +21,14 @@ import { AuthResetPasswordV2Component } from 'app/main/pages/authentication/auth
 
 // routing
 const routes: Routes = [
-  {
-    path: 'authentication/login-v1',
-    component: AuthLoginV1Component
-  },
   // {
-  //   path: 'authentication/login-v2',
-  //   component: AuthLoginV2Component
+  //   path: 'authentication/login-v1',
+  //   component: AuthLoginV1Component
   // },
+  {
+    path: 'authentication/login-v2',
+    component: AuthLoginV2Component
+  },
   {
     path: 'authentication/register-v1',
     component: AuthRegisterV1Component

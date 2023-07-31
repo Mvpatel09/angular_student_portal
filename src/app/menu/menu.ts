@@ -902,7 +902,7 @@ export const menu: CoreMenu[] = [
     id: 'forms-table',
     type: 'section',
     title: '',
-    translate: 'MENU.FT.SECTION',
+    // translate: 'MENU.FT.SECTION',
     icon: 'file-text',
     children: [
       // {
@@ -1060,6 +1060,38 @@ export const menu: CoreMenu[] = [
       // },
       {
         id: 'tables-datatable',
+        title: 'Users Management',
+        // translate: 'MENU.FT.DATATABLES',
+        type: 'item',
+        icon: 'grid',
+        url: 'tables/user-management'
+      },
+      {
+        id: 'tables-datatable',
+        title: 'Colleges',
+        // translate: 'MENU.FT.DATATABLES',
+        type: 'item',
+        icon: 'grid',
+        url: 'tables/colleges'
+      },
+      {
+        id: 'tables-datatable',
+        title: 'Courses',
+        // translate: 'MENU.FT.DATATABLES',
+        type: 'item',
+        icon: 'grid',
+        url: 'tables/courses'
+      },
+      {
+        id: 'tables-datatable',
+        title: 'Semesters',
+        // translate: 'MENU.FT.DATATABLES',
+        type: 'item',
+        icon: 'grid',
+        url: 'tables/semesters'
+      },
+      {
+        id: 'tables-datatable',
         title: 'Subjects',
         // translate: 'MENU.FT.DATATABLES',
         type: 'item',
@@ -1089,6 +1121,22 @@ export const menu: CoreMenu[] = [
         type: 'item',
         icon: 'grid',
         url: 'tables/sub-topics'
+      },
+      {
+        id: 'tables-datatable',
+        title: 'Question Bank',
+        // translate: 'MENU.FT.DATATABLES',
+        type: 'item',
+        icon: 'grid',
+        url: 'tables/question-bank'
+      },
+      {
+        id: 'tables-datatable',
+        title: 'Exams History',
+        // translate: 'MENU.FT.DATATABLES',
+        type: 'item',
+        icon: 'grid',
+        url: 'tables/exams'
       }
     ]
   },

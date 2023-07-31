@@ -52,33 +52,52 @@ export class AuthenticationService {
    * @returns user
    */
   login(email: string, password: string) {
-    return this._http
-      .post<any>(`${environment.apiUrl}/users/authenticate`, { email, password })
+    let a = this._http
+      .post<any>(`${environment.apiUrl}/User/Login`, { email, password })
       .pipe(
         map(user => {
           // login successful if there's a jwt token in the response
-          if (user && user.token) {
+          if (user && user.data) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('token', user.data)
+            localStorage.setItem('currentUser', JSON.stringify({
+              id: 1,
+              email: 'admin@demo.com',
+              password: 'admin',
+              firstName: 'John',
+              lastName: 'Doe',
+              avatar: 'avatar-s-11.jpg',
+              role: Role.Admin,
+              token: user.data
+            }));
 
             // Display welcome toast!
             setTimeout(() => {
               this._toastrService.success(
-                'You have successfully logged in as an ' +
-                  user.role +
-                  ' user to Vuexy. Now you can start to explore. Enjoy! 🎉',
-                '👋 Welcome, ' + user.firstName + '!',
+                'You have successfully logged in as an '
+                ,
+                '👋 Welcome, ' + '!',
                 { toastClass: 'toast ngx-toastr', closeButton: true }
               );
             }, 2500);
 
             // notify
-            this.currentUserSubject.next(user);
+            this.currentUserSubject.next({
+              id: 1,
+              email: 'admin@demo.com',
+              password: 'admin',
+              firstName: 'John',
+              lastName: 'Doe',
+              avatar: 'avatar-s-11.jpg',
+              role: Role.Admin,
+              token: user.data
+            });
           }
-
           return user;
         })
       );
+    console.log(a)
+    return a;
   }
 
   /**
@@ -88,6 +107,7 @@ export class AuthenticationService {
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
     // notify
     this.currentUserSubject.next(null);
   }

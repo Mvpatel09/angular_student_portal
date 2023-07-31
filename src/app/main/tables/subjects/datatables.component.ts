@@ -45,6 +45,7 @@ export class DatatablesComponent implements OnInit {
   public payload = {};
   public initial = {}
   public editId = 0
+  public file = null;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -166,18 +167,40 @@ export class DatatablesComponent implements OnInit {
     this.modalService.open(modalForm);
   }
 
-  submit(subjectName, description, filePath = '') {
+  onFileSelected(event) {
+    if (event.target.files.length > 0) {
+      console.log(event.target.files[0]);
+      this.file = event.target.files[0]
+    }
+  }
+
+  submit(data) {
     // window.alert(subjectName + description)
-    console.log(this.editId, this.initial)
+    console.log(data)
+    // return
+    console.log(this.editId, this.initial, data)
     if (this.editId) {
-      new ItemsService().childPath('post', 'Subject/UpdateSubject', { ...this.initial, subjectName, description, filePath }).then((e) => {
-        window.alert(e.data.message)
+      let formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("id", this.editId.toString());
+      formData.append("subjectName", data.subjectName);
+      formData.append("description", data.description);
+      formData.append("filePath", data.filePath);
+      formData.append("isActive", data.isActive);
+      new ItemsService().childPath('post', 'Subject/UpdateSubject', formData).then((e) => {
+        // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()
       })
     } else {
-      new ItemsService().childPath('post', 'Subject/AddSubject', { subjectName, description, filePath }).then((e) => {
-        window.alert(e.data.message)
+      let formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("subjectName", data.subjectName);
+      formData.append("description", data.description);
+      formData.append("filePath", data.filePath);
+      formData.append("isActive", data.isActive);
+      new ItemsService().childPath('post', 'Subject/AddSubject', formData).then((e) => {
+        // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()
       })
@@ -187,7 +210,7 @@ export class DatatablesComponent implements OnInit {
   deleteData() {
     console.log(this.editId)
     new ItemsService().childPath('get', `Subject/DeleteSubject?id=${this.editId}`).then((e) => {
-      window.alert(e.data.message)
+      // window.alert(e.data.message)
       this.ngOnInit()
       this.modalService.dismissAll()
     })

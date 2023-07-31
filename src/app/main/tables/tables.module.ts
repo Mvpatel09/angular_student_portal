@@ -5,9 +5,15 @@ import { ChaptersModule } from 'app/main/tables/chapters/datatables.module';
 import { SubjectsModule } from 'app/main/tables/subjects/datatables.module';
 import { TopicsModule } from 'app/main/tables/topics/datatables.module';
 import { SubTopicsModule } from 'app/main/tables/subTopics/datatables.module';
+import { CoursesModule } from './courses/datatables.module';
+import { UserManagementModule } from './userManagement/datatables.module';
+import { ExamsModule } from './exams/datatables.module';
+import { QuestionBankModule } from './questionBank/datatables.module';
+import { SemestersModule } from './semesters/datatables.module';
+import { CollegesModule } from './colleges/datatables.module';
 
 @NgModule({
   declarations: [],
-  imports: [ChaptersModule, SubjectsModule, TopicsModule, SubTopicsModule]
+  imports: [ChaptersModule, SubjectsModule, TopicsModule, SubTopicsModule, CoursesModule, UserManagementModule, ExamsModule, QuestionBankModule, SemestersModule, CollegesModule]
 })
 export class TablesModule { }
