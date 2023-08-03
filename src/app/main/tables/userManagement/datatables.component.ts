@@ -167,7 +167,7 @@ export class DatatablesComponent implements OnInit {
 
   deleteData() {
     console.log(this.editId)
-    new ItemsService().childPath('get', `Colleges/DeleteColleges?id=${this.editId}`).then((e) => {
+    new ItemsService().childPath('get', `User/DeleteUsers?id=${this.editId}`).then((e) => {
       // window.alert(e.data.message)
       this.ngOnInit()
       this.modalService.dismissAll()
@@ -178,7 +178,7 @@ export class DatatablesComponent implements OnInit {
   submit(data) {
     // window.alert(subjectName + description)
     if (this.editId) {
-      new ItemsService().childPath('post', 'Colleges/UpdateColleges', { id: this.editId, ...data }).then((e) => {
+      new ItemsService().childPath('post', 'User/UpdateUsers', { id: this.editId, ...data }).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()

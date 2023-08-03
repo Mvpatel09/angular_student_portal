@@ -20,7 +20,7 @@
               <div class="modal-body" tabindex="0" ngbAutofocus>
                 <form #userlogin="ngForm" (ngSubmit)="submit(userlogin.value)">
                   <label>Role</label>
-                  <select class="custom-select" name="merchant_id" [(ngModel)]="contract.merchant_id" id="merchant_id"
+                  <select class="custom-select" name="userRoleId" [(ngModel)]="initial.userRoleId" id="userRoleId"
                     required>
                     <option value="1">User</option>
                     <option value="2">College</option>
@@ -42,9 +42,8 @@
                   </div>
                   <label>Profile Path</label>
                   <div class="form-group">
-                    <input id="profilePath" value="image" (change)="onFileSelected($event)"
-                      [(ngModel)]="initial.profilePath" name="profilePath" #profilePath type="text" disabled
-                      placeholder="" class="form-control" />
+                    <input id="profilePath" (change)="onFileSelected($event)" [(ngModel)]="initial.profilePath"
+                      name="profilePath" #profilePath type="text" disabled placeholder="" class="form-control" />
                   </div>
                   <label>Contact Number</label>
                   <div class="form-group">
