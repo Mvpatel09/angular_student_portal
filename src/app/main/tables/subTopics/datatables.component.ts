@@ -43,6 +43,9 @@ export class DatatablesComponent implements OnInit {
   public SelectionType = SelectionType;
   public exportCSVData;
   public payload = {};
+  public initialData: any;
+  public collegeList: Array<{}>;
+  public selectedCollege = '';
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -213,6 +216,15 @@ export class DatatablesComponent implements OnInit {
         this.modalService.dismissAll()
       })
     }
+  }
+
+  collegeOnChange({ name, value }) {
+    console.log(name, value)
+    let filter = this.initialData.filter((e) => +e.collegeId === +value)
+    this.tempData = filter
+    this.kitchenSinkRows = filter;
+    this.exportCSVData = filter;
+    this.rows = filter
   }
 
 

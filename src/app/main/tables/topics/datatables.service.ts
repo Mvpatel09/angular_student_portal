@@ -50,4 +50,11 @@ export class DatatablesService implements Resolve<any> {
       // }, reject);
     });
   }
+  getColleges(values, url = ''): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      new ItemsService().childPath('get', 'Subject/GetDrpListByIds' + url).then(response => {
+        resolve(response.data.data[values])
+      })
+    })
+  }
 }

@@ -43,6 +43,17 @@ export class DatatablesComponent implements OnInit {
   public SelectionType = SelectionType;
   public exportCSVData;
   public payload = {};
+  public initialData: any;
+  public collegeList: Array<{}>;
+  public selectedCollege = '';
+  public coursesList: Array<{}>;
+  public selectedCourse = '';
+  public selectedSemester = '';
+  public semesterList: Array<{}>;
+  public selectedSubject = '';
+  public subjectList: Array<{}>;
+  public selectedChapter = '';
+  public chapterList: Array<{}>;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -196,6 +207,7 @@ export class DatatablesComponent implements OnInit {
       formData.append("filePath", data.filePath);
       formData.append("isActive", data.isActive);
       formData.append("isLock", data.isLock);
+      formData.append("chapterId", this.selectedChapter);
       new ItemsService().childPath('post', 'Topic/UpdateTopics', formData).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
@@ -209,6 +221,7 @@ export class DatatablesComponent implements OnInit {
       formData.append("filePath", data.filePath);
       formData.append("isActive", data.isActive);
       formData.append("isLock", data.isLock);
+      formData.append("chapterId", this.selectedChapter);
       new ItemsService().childPath('post', 'Topic/AddTopics', formData).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
@@ -217,7 +230,63 @@ export class DatatablesComponent implements OnInit {
     }
   }
 
+  collegeOnChange({ name, value }) {
+    this._datatablesService.getColleges('coursesList', `?CollegeId=${value}`).then((response) => {
+      this.coursesList = response
+      this.selectedCourse = ''
+      this.selectedSemester = ''
+      this.selectedSubject = ''
+      this.subjectList = []
+      this.semesterList = []
+      this.tempData = []
+      this.kitchenSinkRows = [];
+      this.exportCSVData = [];
+      this.rows = []
+    })
+  }
 
+  coursesOnChange({ name, value }) {
+    this._datatablesService.getColleges('semesterList', `?CollegeId=${this.selectedCollege}&CourseId=${value}`).then((response) => {
+      this.semesterList = response
+      this.selectedSemester = ''
+      this.selectedSubject = ''
+      this.subjectList = []
+      this.tempData = []
+      this.kitchenSinkRows = [];
+      this.exportCSVData = [];
+      this.rows = []
+    })
+  }
+
+  semesterOnChange({ name, value }) {
+    this._datatablesService.getColleges('subjectsList', `?CollegeId=${this.selectedCollege}&CourseId=${this.selectedCourse}&SemId=${value}`).then((response) => {
+      this.subjectList = response
+      this.selectedSubject = ''
+      this.tempData = []
+      this.kitchenSinkRows = [];
+      this.exportCSVData = [];
+      this.rows = []
+    })
+  }
+
+  subjectOnChange({ name, value }) {
+    this._datatablesService.getColleges('chaptersList', `?CollegeId=${this.selectedCollege}&CourseId=${this.selectedCourse}&SemId=${this.selectedSemester}&SubId=${value}`).then((response) => {
+      this.chapterList = response
+      this.selectedChapter = ''
+      this.tempData = []
+      this.kitchenSinkRows = [];
+      this.exportCSVData = [];
+      this.rows = []
+    })
+  }
+
+  chapterOnChange({ name, value }) {
+    let filter = this.initialData.filter((e) => +e.chapterId === +value)
+    this.tempData = filter
+    this.kitchenSinkRows = filter;
+    this.exportCSVData = filter;
+    this.rows = filter
+  }
 
 
   /**
@@ -270,11 +339,23 @@ export class DatatablesComponent implements OnInit {
    */
   ngOnInit() {
     this._datatablesService.getDataTableRows().then(response => {
-      this.rows = response;
-      this.tempData = response;
-      this.kitchenSinkRows = response;
-      this.exportCSVData = response;
+      if (this.selectedCourse !== '' && this.selectedCollege !== '' && this.selectedSemester !== '' && this.selectedSubject && this.selectedChapter) {
+        this.initialData = response;
+        let filter = response.filter((e) => +e.chapterId === +this.selectedChapter)
+        this.tempData = filter
+        this.kitchenSinkRows = filter;
+        this.exportCSVData = filter;
+        this.rows = filter
+      } else {
+        this.initialData = response;
+      }
     });
+
+    if (this.selectedCollege === '') {
+      this._datatablesService.getColleges('collegesList').then(response => {
+        this.collegeList = response
+      });
+    }
 
     // content header
     this.contentHeader = {

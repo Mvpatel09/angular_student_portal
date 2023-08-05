@@ -8,6 +8,13 @@
       <!-- <core-card-snippet [snippetCode]="_snippetCodeKitchenSink"> -->
       <h4 class="card-title">Courses</h4>
       <div class="row">
+        <div class="col-4 mb-50">
+          <label>College</label>
+          <select class="custom-select" name="CollegeId" id="CollegeId" (change)="collegeOnChange($event.target)"
+            [(ngModel)]="selectedCollege">
+            <option *ngFor="let option of collegeList" [value]="option.id">{{option.name}}</option>
+          </select>
+        </div>
         <div class="col-12 mb-50">
           <button class="btn btn-primary ml-1" rippleEffect (click)="modalOpenForm(modalForm)">
             <ng-template #modalForm let-modal>
