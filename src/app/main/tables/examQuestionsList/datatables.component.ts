@@ -6,14 +6,14 @@ import { ColumnMode, DatatableComponent, SelectionType } from '@swimlane/ngx-dat
 
 import { CoreTranslationService } from '@core/services/translation.service';
 
-import { locale as german } from 'app/main/tables/questionBank/i18n/de';
-import { locale as english } from 'app/main/tables/questionBank/i18n/en';
-import { locale as french } from 'app/main/tables/questionBank/i18n/fr';
-import { locale as portuguese } from 'app/main/tables/questionBank/i18n/pt';
+import { locale as german } from 'app/main/tables/examQuestionsList/i18n/de';
+import { locale as english } from 'app/main/tables/examQuestionsList/i18n/en';
+import { locale as french } from 'app/main/tables/examQuestionsList/i18n/fr';
+import { locale as portuguese } from 'app/main/tables/examQuestionsList/i18n/pt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as snippet from 'app/main/tables/questionBank/datatables.snippetcode';
+import * as snippet from 'app/main/tables/examQuestionsList/datatables.snippetcode';
 
-import { DatatablesService } from 'app/main/tables/questionBank/datatables.service';
+import { DatatablesService } from 'app/main/tables/examQuestionsList/datatables.service';
 import { ItemsService } from 'app/service/config';
 
 @Component({
@@ -54,8 +54,16 @@ export class DatatablesComponent implements OnInit {
   public subjectList: Array<{}>;
   public selectedChapter = '';
   public chapterList: Array<{}>;
-  public selectedTopic = 0;
+  public selectedTopic = '';
   public topicList: Array<{}>;
+  public cars = [
+    { id: 1, name: "BMW Hyundai" },
+    { id: 2, name: "Kia Tata" },
+    { id: 3, name: "Volkswagen Ford" },
+    { id: 4, name: "Renault Audi" },
+    { id: 5, name: "Mercedes Benz Skoda" },
+  ];
+
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -181,15 +189,13 @@ export class DatatablesComponent implements OnInit {
 
   submit(data) {
     if (this.editId) {
-      new ItemsService().childPath('post', 'ExamQuestion/UpdateExamQuestion', { id: this.editId, ...data, topicId: this.selectedTopic, ans: data[data.selectedAns] }).then((e) => {
+      new ItemsService().childPath('post', 'Exam/UpdateExam', { id: this.editId, ...data, questionIds: this.selected.map((e) => e.id), semesterId: this.selectedSemester, addedByCollege: this.selectedCollege, AddedByUser: 0 }).then((e) => {
         this.ngOnInit()
-        this.getTopicList(this.selectedTopic)
         this.modalService.dismissAll()
       })
     } else {
-      new ItemsService().childPath('post', 'ExamQuestion/AddExamQuestion', { ...data, topicId: this.selectedTopic, ans: data[data.selectedAns] }).then((e) => {
+      new ItemsService().childPath('post', 'Exam/AddExam', { ...data, questionIds: this.selected.map((e) => e.id), semesterId: this.selectedSemester, addedByCollege: this.selectedCollege, AddedByUser: 0 }).then((e) => {
         this.ngOnInit()
-        this.getTopicList(this.selectedTopic)
         this.modalService.dismissAll()
       })
     }
@@ -225,6 +231,9 @@ export class DatatablesComponent implements OnInit {
   }
 
   semesterOnChange({ name, value }) {
+    this._datatablesService.getExamList(`?CollegeId=${this.selectedCollege}&SemId=${value}`).then((response) => {
+
+    })
     this._datatablesService.getColleges('subjectsList', `?CollegeId=${this.selectedCollege}&CourseId=${this.selectedCourse}&SemId=${value}`).then((response) => {
       this.subjectList = response
       this.selectedSubject = ''
@@ -249,7 +258,7 @@ export class DatatablesComponent implements OnInit {
   chapterOnChange({ name, value }) {
     this._datatablesService.getColleges('topicsList', `?CollegeId=${this.selectedCollege}&CourseId=${this.selectedCourse}&SemId=${this.selectedSemester}&SubId=${this.selectedSubject}&ChapId=${value}`).then((response) => {
       this.topicList = response
-      this.selectedTopic = 0
+      this.selectedTopic = ''
       this.tempData = []
       this.kitchenSinkRows = [];
       this.exportCSVData = [];
@@ -257,20 +266,15 @@ export class DatatablesComponent implements OnInit {
     })
   }
 
-  topicOnChange({ name, value }) {
-    this.getTopicList(value)
-    // let filter = this.initialData.filter((e) => +e.topicId === +value)
-    // this.tempData = filter
-    // this.kitchenSinkRows = filter;
-    // this.exportCSVData = filter;
-    // this.rows = filter
+  topicOnChange(val) {
+    this.getTopicList(val.map((e) => e.id))
   }
 
   getTopicList(value) {
-    this._datatablesService.getDataTableRows([value]).then(response => {
+    this._datatablesService.getDataTableRows(value).then(response => {
       if (this.selectedCourse !== '' && this.selectedCollege !== '' && this.selectedSemester !== '' && this.selectedSubject && this.selectedChapter) {
         this.initialData = response;
-        let filter = response.filter((e) => +e.topicId === +value)
+        let filter = response.filter((e) => value.some((el) => +e.topicId === +el))
         this.tempData = filter
         this.kitchenSinkRows = filter;
         this.exportCSVData = filter;
@@ -280,7 +284,6 @@ export class DatatablesComponent implements OnInit {
       }
     });
   }
-
 
   /**
    * For ref only, log selected values
@@ -337,7 +340,6 @@ export class DatatablesComponent implements OnInit {
         this.collegeList = response
       });
     }
-
     // content header
     this.contentHeader = {
       headerTitle: 'Datatables',

@@ -57,9 +57,9 @@ export class AuthenticationService {
       .pipe(
         map(user => {
           // login successful if there's a jwt token in the response
-          if (user && user.data) {
+          if (user && user.tocken) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('token', user.data)
+            localStorage.setItem('token', user.tocken)
             localStorage.setItem('currentUser', JSON.stringify({
               id: 1,
               email: 'admin@demo.com',
@@ -68,7 +68,7 @@ export class AuthenticationService {
               lastName: 'Doe',
               avatar: 'avatar-s-11.jpg',
               role: Role.Admin,
-              token: user.data
+              token: user.tocken
             }));
 
             // Display welcome toast!
@@ -83,14 +83,14 @@ export class AuthenticationService {
 
             // notify
             this.currentUserSubject.next({
-              id: 1,
-              email: 'admin@demo.com',
+              id: user.userId,
+              email,
               password: 'admin',
-              firstName: 'John',
-              lastName: 'Doe',
+              firstName: user.userName,
+              lastName: '',
               avatar: 'avatar-s-11.jpg',
               role: Role.Admin,
-              token: user.data
+              token: user.tocken
             });
           }
           return user;

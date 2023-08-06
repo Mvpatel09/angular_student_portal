@@ -17,37 +17,37 @@
         </div>
         <div class="col-4 mb-50">
           <label>Courses</label>
-          <select class="custom-select" name="CollegeId" id="CollegeId" (change)="collegeOnChange($event.target)"
-            [(ngModel)]="selectedCollege">
-            <option *ngFor="let option of collegeList" [value]="option.id">{{option.name}}</option>
+          <select class="custom-select" name="CollegeId" id="CollegeId" (change)="coursesOnChange($event.target)"
+            [(ngModel)]="selectedCourse">
+            <option *ngFor="let option of coursesList" [value]="option.id">{{option.name}}</option>
           </select>
         </div>
         <div class="col-4 mb-50">
           <label>Semesters</label>
-          <select class="custom-select" name="CollegeId" id="CollegeId" (change)="collegeOnChange($event.target)"
-            [(ngModel)]="selectedCollege">
-            <option *ngFor="let option of collegeList" [value]="option.id">{{option.name}}</option>
+          <select class="custom-select" name="CollegeId" id="CollegeId" (change)="semesterOnChange($event.target)"
+            [(ngModel)]="selectedSemester">
+            <option *ngFor="let option of semesterList" [value]="option.id">{{option.semester}}</option>
           </select>
         </div>
         <div class="col-4 mb-50">
           <label>Subjects</label>
-          <select class="custom-select" name="CollegeId" id="CollegeId" (change)="collegeOnChange($event.target)"
-            [(ngModel)]="selectedCollege">
-            <option *ngFor="let option of collegeList" [value]="option.id">{{option.name}}</option>
+          <select class="custom-select" name="CollegeId" id="CollegeId" (change)="subjectOnChange($event.target)"
+            [(ngModel)]="selectedSubject">
+            <option *ngFor="let option of subjectList" [value]="option.id">{{option.subjectName}}</option>
           </select>
         </div>
         <div class="col-4 mb-50">
           <label>Chapters</label>
-          <select class="custom-select" name="CollegeId" id="CollegeId" (change)="collegeOnChange($event.target)"
-            [(ngModel)]="selectedCollege">
-            <option *ngFor="let option of collegeList" [value]="option.id">{{option.name}}</option>
+          <select class="custom-select" name="CollegeId" id="CollegeId" (change)="chapterOnChange($event.target)"
+            [(ngModel)]="selectedChapter">
+            <option *ngFor="let option of chapterList" [value]="option.id">{{option.chapterName}}</option>
           </select>
         </div>
         <div class="col-4 mb-50">
           <label>Topics</label>
-          <select class="custom-select" name="CollegeId" id="CollegeId" (change)="collegeOnChange($event.target)"
-            [(ngModel)]="selectedCollege">
-            <option *ngFor="let option of collegeList" [value]="option.id">{{option.name}}</option>
+          <select class="custom-select" name="CollegeId" id="CollegeId" (change)="topicOnChange($event.target)"
+            [(ngModel)]="selectedTopic">
+            <option *ngFor="let option of topicList" [value]="option.id">{{option.topicName}}</option>
           </select>
         </div>
         <div class="col-12 mb-50">

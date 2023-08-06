@@ -46,6 +46,16 @@ export class DatatablesComponent implements OnInit {
   public initialData: any;
   public collegeList: Array<{}>;
   public selectedCollege = '';
+  public coursesList: Array<{}>;
+  public selectedCourse = '';
+  public selectedSemester = '';
+  public semesterList: Array<{}>;
+  public selectedSubject = '';
+  public subjectList: Array<{}>;
+  public selectedChapter = '';
+  public chapterList: Array<{}>;
+  public selectedTopic = '';
+  public topicList: Array<{}>;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -198,6 +208,7 @@ export class DatatablesComponent implements OnInit {
       formData.append("description", data.description);
       formData.append("filePath", data.filePath);
       formData.append("isActive", data.isActive);
+      formData.append("topicId", this.selectedTopic);
       new ItemsService().childPath('post', 'Topic/UpdateSubTopics', formData).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
@@ -210,6 +221,7 @@ export class DatatablesComponent implements OnInit {
       formData.append("description", data.description);
       formData.append("filePath", data.filePath);
       formData.append("isActive", data.isActive);
+      formData.append("topicId", this.selectedTopic);
       new ItemsService().childPath('post', 'Topic/AddSubTopics', formData).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
@@ -219,8 +231,68 @@ export class DatatablesComponent implements OnInit {
   }
 
   collegeOnChange({ name, value }) {
-    console.log(name, value)
-    let filter = this.initialData.filter((e) => +e.collegeId === +value)
+    this._datatablesService.getColleges('coursesList', `?CollegeId=${value}`).then((response) => {
+      this.coursesList = response
+      this.selectedCourse = ''
+      this.selectedSemester = ''
+      this.selectedSubject = ''
+      this.subjectList = []
+      this.semesterList = []
+      this.tempData = []
+      this.kitchenSinkRows = [];
+      this.exportCSVData = [];
+      this.rows = []
+    })
+  }
+
+  coursesOnChange({ name, value }) {
+    this._datatablesService.getColleges('semesterList', `?CollegeId=${this.selectedCollege}&CourseId=${value}`).then((response) => {
+      this.semesterList = response
+      this.selectedSemester = ''
+      this.selectedSubject = ''
+      this.subjectList = []
+      this.tempData = []
+      this.kitchenSinkRows = [];
+      this.exportCSVData = [];
+      this.rows = []
+    })
+  }
+
+  semesterOnChange({ name, value }) {
+    this._datatablesService.getColleges('subjectsList', `?CollegeId=${this.selectedCollege}&CourseId=${this.selectedCourse}&SemId=${value}`).then((response) => {
+      this.subjectList = response
+      this.selectedSubject = ''
+      this.tempData = []
+      this.kitchenSinkRows = [];
+      this.exportCSVData = [];
+      this.rows = []
+    })
+  }
+
+  subjectOnChange({ name, value }) {
+    this._datatablesService.getColleges('chaptersList', `?CollegeId=${this.selectedCollege}&CourseId=${this.selectedCourse}&SemId=${this.selectedSemester}&SubId=${value}`).then((response) => {
+      this.chapterList = response
+      this.selectedChapter = ''
+      this.tempData = []
+      this.kitchenSinkRows = [];
+      this.exportCSVData = [];
+      this.rows = []
+    })
+  }
+
+  chapterOnChange({ name, value }) {
+    this._datatablesService.getColleges('topicsList', `?CollegeId=${this.selectedCollege}&CourseId=${this.selectedCourse}&SemId=${this.selectedSemester}&SubId=${this.selectedSubject}&ChapId=${value}`).then((response) => {
+      this.topicList = response
+      this.selectedTopic = ''
+      this.tempData = []
+      this.kitchenSinkRows = [];
+      this.exportCSVData = [];
+      this.rows = []
+    })
+  }
+
+  topicOnChange({ name, value }) {
+    let filter = this.initialData.filter((e) => +e.topicId === +value)
     this.tempData = filter
     this.kitchenSinkRows = filter;
     this.exportCSVData = filter;
@@ -278,11 +350,23 @@ export class DatatablesComponent implements OnInit {
    */
   ngOnInit() {
     this._datatablesService.getDataTableRows().then(response => {
-      this.rows = response;
-      this.tempData = response;
-      this.kitchenSinkRows = response;
-      this.exportCSVData = response;
+      if (this.selectedCourse !== '' && this.selectedCollege !== '' && this.selectedSemester !== '' && this.selectedSubject && this.selectedChapter && this.selectedTopic) {
+        this.initialData = response;
+        let filter = response.filter((e) => +e.topicId === +this.selectedTopic)
+        this.tempData = filter
+        this.kitchenSinkRows = filter;
+        this.exportCSVData = filter;
+        this.rows = filter
+      } else {
+        this.initialData = response;
+      }
     });
+
+    if (this.selectedCollege === '') {
+      this._datatablesService.getColleges('collegesList').then(response => {
+        this.collegeList = response
+      });
+    }
 
     // content header
     this.contentHeader = {

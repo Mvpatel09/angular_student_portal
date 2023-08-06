@@ -1132,12 +1132,28 @@ export const menu: CoreMenu[] = [
       },
       {
         id: 'tables-datatable',
+        title: 'Exams List',
+        // translate: 'MENU.FT.DATATABLES',
+        type: 'item',
+        icon: 'grid',
+        url: 'tables/exam-questions-list'
+      },
+      {
+        id: 'tables-datatable',
+        title: 'Add Exams',
+        // translate: 'MENU.FT.DATATABLES',
+        type: 'item',
+        icon: 'grid',
+        url: 'tables/add-exam-questions'
+      },
+      {
+        id: 'tables-datatable',
         title: 'Exams History',
         // translate: 'MENU.FT.DATATABLES',
         type: 'item',
         icon: 'grid',
         url: 'tables/exams'
-      }
+      },
     ]
   },
   // Charts & Maps

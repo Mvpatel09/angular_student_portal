@@ -38,10 +38,10 @@ export class DatatablesService implements Resolve<any> {
   /**
    * Get rows
    */
-  getDataTableRows(arr): Promise<any[]> {
+  getDataTableRows(): Promise<any[]> {
     return new Promise((resolve, reject) => {
       // this._httpClient.get('api/datatable-rows').subscribe((response: any) => {
-      new ItemsService().childPath('post', `ExamQuestion/GetExamQuestionByTopicId`, arr).then(response => {
+      new ItemsService().childPath('get', 'ExamQuestion/GetAllExamQuestion').then(response => {
         this.rows = response.data.data.table;
         this.onDatatablessChanged.next(this.rows);
         resolve(this.rows);
