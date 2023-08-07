@@ -84,7 +84,7 @@
                       No
                     </label>
                   </div>
-                  <label>File Path </label>
+                  <label>3D Image</label>
                   <div class="form-group">
                     <input id="filePath" [(ngModel)]="initial.filePath" name="filePath" #filePath type="text"
                       placeholder="" class="form-control" />
@@ -93,6 +93,11 @@
                   <div class="form-group">
                     <input id="file" (change)="onFileSelected($event)" [(ngModel)]="initial.file" name="file" #filePath
                       type="file" placeholder="" class="form-control" />
+                  </div>
+                  <label>AttachMents</label>
+                  <div class="form-group">
+                    <input id="attachMents" (change)="onFileSelected($event)" [(ngModel)]="initial.attachMents"
+                      name="attachMents" #attachMents type="file" placeholder="" class="form-control" multiple />
                   </div>
                   <button type="submit" class="btn btn-primary" rippleEffect>
                     Submit

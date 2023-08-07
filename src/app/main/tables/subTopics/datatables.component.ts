@@ -70,7 +70,7 @@ export class DatatablesComponent implements OnInit {
   editId: any;
   initial: any;
   file: any;
-
+  attachMents: any;
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
 
@@ -155,9 +155,12 @@ export class DatatablesComponent implements OnInit {
   }
 
   onFileSelected(event) {
-    if (event.target.files.length > 0) {
-      console.log(event.target.files[0]);
+    let { files, name } = event.target
+    if (name === 'file' && files.length) {
       this.file = event.target.files[0]
+    }
+    if (name === 'attachMents' && files.length) {
+      this.attachMents = event.target.files
     }
   }
 
@@ -203,6 +206,7 @@ export class DatatablesComponent implements OnInit {
     if (this.editId) {
       let formData = new FormData();
       formData.append("file", this.file);
+      formData.append("attachMents", this.attachMents);
       formData.append("id", this.editId.toString());
       formData.append("subTopicName", data.subTopicName);
       formData.append("description", data.description);
@@ -217,6 +221,7 @@ export class DatatablesComponent implements OnInit {
     } else {
       let formData = new FormData();
       formData.append("file", this.file);
+      formData.append("attachMents", this.attachMents);
       formData.append("subTopicName", data.subTopicName);
       formData.append("description", data.description);
       formData.append("filePath", data.filePath);
