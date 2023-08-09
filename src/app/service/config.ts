@@ -9,7 +9,7 @@ interface AxiosInstance {
 @Injectable()
 export class ItemsService {
     // http: any;
-    baseURL: any = 'http://sunnyradadiya-001-site1.ftempurl.com/';
+    baseURL: any = 'http://mandreducation.com/StudyAPIPublish/';
 
     public childPath(method: string, args: string, data?: any): Promise<any> {
         return axios.request<AxiosInstance>({

@@ -12,7 +12,7 @@ import { locale as french } from 'app/main/tables/userManagement/i18n/fr';
 import { locale as portuguese } from 'app/main/tables/userManagement/i18n/pt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as snippet from 'app/main/tables/userManagement/datatables.snippetcode';
-
+import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
 import { DatatablesService } from 'app/main/tables/userManagement/datatables.service';
 import { ItemsService } from 'app/service/config';
 
@@ -62,6 +62,7 @@ export class DatatablesComponent implements OnInit {
   public _snippetCodeMultilangual = snippet.snippetCodeMultilangual;
   initial: any;
   editId: any;
+  currentUser: any;
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
@@ -279,7 +280,7 @@ export class DatatablesComponent implements OnInit {
    * @param {DatatablesService} _datatablesService
    * @param {CoreTranslationService} _coreTranslationService
    */
-  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private modalService: NgbModal) {
+  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private modalService: NgbModal, private _coreMenuService: CoreMenuService) {
     this._unsubscribeAll = new Subject();
     this._coreTranslationService.translate(english, french, german, portuguese);
   }
@@ -295,8 +296,16 @@ export class DatatablesComponent implements OnInit {
       this.initialData = response;
     });
 
-    this._datatablesService.getColleges('collegesList').then(response => {
-      this.collegeList = response
+
+
+    this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
+      this.currentUser = this._coreMenuService.currentUser;
+      console.log(this.currentUser, "maulik303")
+      if (this.currentUser.userRoleId === 1) {
+        this._datatablesService.getColleges('collegesList').then(response => {
+          this.collegeList = response
+        });
+      }
     });
     // content header
     this.contentHeader = {

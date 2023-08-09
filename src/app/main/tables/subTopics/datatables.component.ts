@@ -56,6 +56,7 @@ export class DatatablesComponent implements OnInit {
   public chapterList: Array<{}>;
   public selectedTopic = '';
   public topicList: Array<{}>;
+  public attachMents: Array<{}>;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -70,7 +71,6 @@ export class DatatablesComponent implements OnInit {
   editId: any;
   initial: any;
   file: any;
-  attachMents: any;
   filePath: any;
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
@@ -210,7 +210,9 @@ export class DatatablesComponent implements OnInit {
     if (this.editId) {
       let formData = new FormData();
       formData.append("file", this.file);
-      formData.append("attachMents", this.attachMents);
+      for (let i = 0; i < this.attachMents.length; i++) {
+        formData.append("attachMents", this.attachMents[i] as any);
+      }
       formData.append("filePath", this.filePath);
       formData.append("id", this.editId.toString());
       formData.append("subTopicName", data.subTopicName);
@@ -226,7 +228,9 @@ export class DatatablesComponent implements OnInit {
     } else {
       let formData = new FormData();
       formData.append("file", this.file);
-      formData.append("attachMents", this.attachMents);
+      for (let i = 0; i < this.attachMents.length; i++) {
+        formData.append("attachMents", this.attachMents[i] as any);
+      }
       formData.append("filePath", this.filePath);
       formData.append("subTopicName", data.subTopicName);
       formData.append("description", data.description);

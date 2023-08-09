@@ -102,7 +102,7 @@ export class AuthenticationService {
               firstName: user.userName,
               lastName: '',
               avatar: 'avatar-s-11.jpg',
-              role: Role.Admin,
+              role: Role.User,
               token: user.tocken,
               userRoleId: user.userRoleId
             }));
@@ -125,7 +125,7 @@ export class AuthenticationService {
               firstName: user.userName,
               lastName: '',
               avatar: 'avatar-s-11.jpg',
-              role: Role.Client,
+              role: Role.User,
               token: user.tocken
             });
           }

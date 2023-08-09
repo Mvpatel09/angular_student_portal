@@ -47,7 +47,7 @@ export class CoreMenuComponent implements OnInit {
     // Subscribe to the current menu changes
     this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
       this.currentUser = this._coreMenuService.currentUser;
-
+      console.log(this.currentUser.userRoleId, "maulik50")
       // Load menu
       this.menu = this._coreMenuService.getCurrentMenu();
 
