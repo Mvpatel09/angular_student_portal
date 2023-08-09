@@ -71,6 +71,7 @@ export class DatatablesComponent implements OnInit {
   initial: any;
   file: any;
   attachMents: any;
+  filePath: any;
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
 
@@ -162,6 +163,9 @@ export class DatatablesComponent implements OnInit {
     if (name === 'attachMents' && files.length) {
       this.attachMents = event.target.files
     }
+    if (name === 'filePath' && files.length) {
+      this.filePath = event.target.files[0]
+    }
   }
 
   modalOpenWarning(modalWarning, id?) {
@@ -207,6 +211,7 @@ export class DatatablesComponent implements OnInit {
       let formData = new FormData();
       formData.append("file", this.file);
       formData.append("attachMents", this.attachMents);
+      formData.append("filePath", this.filePath);
       formData.append("id", this.editId.toString());
       formData.append("subTopicName", data.subTopicName);
       formData.append("description", data.description);
@@ -222,6 +227,7 @@ export class DatatablesComponent implements OnInit {
       let formData = new FormData();
       formData.append("file", this.file);
       formData.append("attachMents", this.attachMents);
+      formData.append("filePath", this.filePath);
       formData.append("subTopicName", data.subTopicName);
       formData.append("description", data.description);
       formData.append("filePath", data.filePath);

@@ -86,8 +86,8 @@
                   </div>
                   <label>3D Image</label>
                   <div class="form-group">
-                    <input id="filePath" [(ngModel)]="initial.filePath" name="filePath" #filePath type="text"
-                      placeholder="" class="form-control" />
+                    <input id="filePath" [(ngModel)]="initial.filePath" name="filePath" #filePath type="file"
+                      (change)="onFileSelected($event)" placeholder="" class="form-control" />
                   </div>
                   <label>File</label>
                   <div class="form-group">

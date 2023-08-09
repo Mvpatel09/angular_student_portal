@@ -57,24 +57,25 @@ export class AuthenticationService {
       .pipe(
         map(user => {
           // login successful if there's a jwt token in the response
-          if (user && user.tocken) {
+          if (user && user.tocken && user.userRoleId === 1) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('token', user.tocken)
             localStorage.setItem('currentUser', JSON.stringify({
-              id: 1,
-              email: 'admin@demo.com',
-              password: 'admin',
-              firstName: 'John',
-              lastName: 'Doe',
+              id: user.id,
+              email,
+              // password: '',
+              firstName: user.userName,
+              lastName: '',
               avatar: 'avatar-s-11.jpg',
               role: Role.Admin,
-              token: user.tocken
+              token: user.tocken,
+              userRoleId: user.userRoleId
             }));
 
             // Display welcome toast!
             setTimeout(() => {
               this._toastrService.success(
-                'You have successfully logged in as an '
+                'You have successfully logged in as an Admin'
                 ,
                 '👋 Welcome, ' + '!',
                 { toastClass: 'toast ngx-toastr', closeButton: true }
@@ -92,11 +93,45 @@ export class AuthenticationService {
               role: Role.Admin,
               token: user.tocken
             });
+          } else if (user && user.tocken && user.userRoleId === 2) {
+            localStorage.setItem('token', user.tocken)
+            localStorage.setItem('currentUser', JSON.stringify({
+              id: user.id,
+              email,
+              // password: '',
+              firstName: user.userName,
+              lastName: '',
+              avatar: 'avatar-s-11.jpg',
+              role: Role.Admin,
+              token: user.tocken,
+              userRoleId: user.userRoleId
+            }));
+
+            // Display welcome toast!
+            setTimeout(() => {
+              this._toastrService.success(
+                'You have successfully logged in as an Organization'
+                ,
+                '👋 Welcome, ' + '!',
+                { toastClass: 'toast ngx-toastr', closeButton: true }
+              );
+            }, 2500);
+
+            // notify
+            this.currentUserSubject.next({
+              id: user.userId,
+              email,
+              password: 'admin',
+              firstName: user.userName,
+              lastName: '',
+              avatar: 'avatar-s-11.jpg',
+              role: Role.Client,
+              token: user.tocken
+            });
           }
           return user;
         })
       );
-    console.log(a)
     return a;
   }
 
