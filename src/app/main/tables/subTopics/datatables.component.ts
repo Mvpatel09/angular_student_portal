@@ -15,6 +15,7 @@ import * as snippet from 'app/main/tables/subTopics/datatables.snippetcode';
 
 import { DatatablesService } from 'app/main/tables/subTopics/datatables.service';
 import { ItemsService } from 'app/service/config';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-datatables',
@@ -57,6 +58,7 @@ export class DatatablesComponent implements OnInit {
   public selectedTopic = '';
   public topicList: Array<{}>;
   public attachMents: Array<{}>;
+  public imageUrl = environment.apiUrl
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -218,7 +220,7 @@ export class DatatablesComponent implements OnInit {
       formData.append("subTopicName", data.subTopicName);
       formData.append("description", data.description);
       formData.append("filePath", data.filePath);
-      formData.append("isActive", data.isActive);
+      formData.append("isActive", true as any);
       formData.append("topicId", this.selectedTopic);
       new ItemsService().childPath('post', 'Topic/UpdateSubTopics', formData).then((e) => {
         // window.alert(e.data.message)
@@ -235,7 +237,7 @@ export class DatatablesComponent implements OnInit {
       formData.append("subTopicName", data.subTopicName);
       formData.append("description", data.description);
       formData.append("filePath", data.filePath);
-      formData.append("isActive", data.isActive);
+      formData.append("isActive", true as any);
       formData.append("topicId", this.selectedTopic);
       new ItemsService().childPath('post', 'Topic/AddSubTopics', formData).then((e) => {
         // window.alert(e.data.message)

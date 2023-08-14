@@ -6,14 +6,14 @@ import { ColumnMode, DatatableComponent, SelectionType } from '@swimlane/ngx-dat
 
 import { CoreTranslationService } from '@core/services/translation.service';
 
-import { locale as german } from 'app/main/tables/topics/i18n/de';
-import { locale as english } from 'app/main/tables/topics/i18n/en';
-import { locale as french } from 'app/main/tables/topics/i18n/fr';
-import { locale as portuguese } from 'app/main/tables/topics/i18n/pt';
+import { locale as german } from 'app/main/tables/sliders/i18n/de';
+import { locale as english } from 'app/main/tables/sliders/i18n/en';
+import { locale as french } from 'app/main/tables/sliders/i18n/fr';
+import { locale as portuguese } from 'app/main/tables/sliders/i18n/pt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as snippet from 'app/main/tables/topics/datatables.snippetcode';
+import * as snippet from 'app/main/tables/sliders/datatables.snippetcode';
 
-import { DatatablesService } from 'app/main/tables/topics/datatables.service';
+import { DatatablesService } from 'app/main/tables/sliders/datatables.service';
 import { ItemsService } from 'app/service/config';
 import { environment } from 'environments/environment';
 
@@ -44,17 +44,6 @@ export class DatatablesComponent implements OnInit {
   public SelectionType = SelectionType;
   public exportCSVData;
   public payload = {};
-  public initialData: any;
-  public collegeList: Array<{}>;
-  public selectedCollege = '';
-  public coursesList: Array<{}>;
-  public selectedCourse = '';
-  public selectedSemester = '';
-  public semesterList: Array<{}>;
-  public selectedSubject = '';
-  public subjectList: Array<{}>;
-  public selectedChapter = '';
-  public chapterList: Array<{}>;
   public imageUrl = environment.apiUrl
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
@@ -67,8 +56,8 @@ export class DatatablesComponent implements OnInit {
   public _snippetCodeCustomCheckbox = snippet.snippetCodeCustomCheckbox;
   public _snippetCodeResponsive = snippet.snippetCodeResponsive;
   public _snippetCodeMultilangual = snippet.snippetCodeMultilangual;
-  editId: any;
   initial: any;
+  editId: any;
   file: any;
 
   // Public Methods
@@ -154,12 +143,6 @@ export class DatatablesComponent implements OnInit {
     this.tableRowDetails.rowDetail.toggleExpandRow(row);
   }
 
-  onFileSelected(event) {
-    if (event.target.files.length > 0) {
-      console.log(event.target.files[0]);
-      this.file = event.target.files[0]
-    }
-  }
 
   modalOpenWarning(modalWarning, id?) {
     this.modalService.open(modalWarning, {
@@ -188,12 +171,20 @@ export class DatatablesComponent implements OnInit {
 
   deleteData() {
     console.log(this.editId)
-    new ItemsService().childPath('get', `Topic/DeleteTopics?id=${this.editId}`).then((e) => {
+    new ItemsService().childPath('get', `Slider/DeleteSliderDataSource?id=${this.editId}`).then((e) => {
       // window.alert(e.data.message)
       this.ngOnInit()
       this.modalService.dismissAll()
     })
   }
+
+  onFileSelected(event) {
+    if (event.target.files.length > 0) {
+      console.log(event.target.files[0]);
+      this.file = event.target.files[0]
+    }
+  }
+
 
   submit(data) {
     // window.alert(subjectName + description)
@@ -204,13 +195,13 @@ export class DatatablesComponent implements OnInit {
       let formData = new FormData();
       formData.append("file", this.file);
       formData.append("id", this.editId.toString());
-      formData.append("topicName", data.topicName);
-      formData.append("description", data.description);
-      formData.append("filePath", data.filePath);
-      formData.append("isActive", true as any);
-      formData.append("isLock", data.isLock);
-      formData.append("chapterId", this.selectedChapter);
-      new ItemsService().childPath('post', 'Topic/UpdateTopics', formData).then((e) => {
+      formData.append("isActive", this.initial.isActive);
+      formData.append("type", data.type);
+      formData.append("UpdatedTime", new Date().toISOString() as any);
+      formData.append("createdTime", new Date().toISOString() as any);
+      formData.append("createdBy", 1 as any);
+      formData.append("updatedBy", 1 as any);
+      new ItemsService().childPath('post', 'Slider/UpdateSliderDataSource', formData).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()
@@ -218,78 +209,20 @@ export class DatatablesComponent implements OnInit {
     } else {
       let formData = new FormData();
       formData.append("file", this.file);
-      formData.append("topicName", data.topicName);
-      formData.append("description", data.description);
-      formData.append("filePath", data.filePath);
+      formData.append("id", 0 as any);
       formData.append("isActive", true as any);
-      formData.append("isLock", data.isLock);
-      formData.append("chapterId", this.selectedChapter);
-      new ItemsService().childPath('post', 'Topic/AddTopics', formData).then((e) => {
+      formData.append("type", data.type);
+      formData.append("createdTime", new Date().toISOString() as any);
+      formData.append("UpdatedTime", new Date().toISOString() as any);
+      formData.append("createdBy", 1 as any);
+      formData.append("updatedBy", 1 as any);
+      new ItemsService().childPath('post', 'Slider/InsertSliderDataSource', formData).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()
       })
     }
   }
-
-  collegeOnChange({ name, value }) {
-    this._datatablesService.getColleges('coursesList', `?CollegeId=${value}`).then((response) => {
-      this.coursesList = response
-      this.selectedCourse = ''
-      this.selectedSemester = ''
-      this.selectedSubject = ''
-      this.subjectList = []
-      this.semesterList = []
-      this.tempData = []
-      this.kitchenSinkRows = [];
-      this.exportCSVData = [];
-      this.rows = []
-    })
-  }
-
-  coursesOnChange({ name, value }) {
-    this._datatablesService.getColleges('semesterList', `?CollegeId=${this.selectedCollege}&CourseId=${value}`).then((response) => {
-      this.semesterList = response
-      this.selectedSemester = ''
-      this.selectedSubject = ''
-      this.subjectList = []
-      this.tempData = []
-      this.kitchenSinkRows = [];
-      this.exportCSVData = [];
-      this.rows = []
-    })
-  }
-
-  semesterOnChange({ name, value }) {
-    this._datatablesService.getColleges('subjectsList', `?CollegeId=${this.selectedCollege}&CourseId=${this.selectedCourse}&SemId=${value}`).then((response) => {
-      this.subjectList = response
-      this.selectedSubject = ''
-      this.tempData = []
-      this.kitchenSinkRows = [];
-      this.exportCSVData = [];
-      this.rows = []
-    })
-  }
-
-  subjectOnChange({ name, value }) {
-    this._datatablesService.getColleges('chaptersList', `?CollegeId=${this.selectedCollege}&CourseId=${this.selectedCourse}&SemId=${this.selectedSemester}&SubId=${value}`).then((response) => {
-      this.chapterList = response
-      this.selectedChapter = ''
-      this.tempData = []
-      this.kitchenSinkRows = [];
-      this.exportCSVData = [];
-      this.rows = []
-    })
-  }
-
-  chapterOnChange({ name, value }) {
-    let filter = this.initialData.filter((e) => +e.chapterId === +value)
-    this.tempData = filter
-    this.kitchenSinkRows = filter;
-    this.exportCSVData = filter;
-    this.rows = filter
-  }
-
 
   /**
    * For ref only, log selected values
@@ -341,23 +274,11 @@ export class DatatablesComponent implements OnInit {
    */
   ngOnInit() {
     this._datatablesService.getDataTableRows().then(response => {
-      if (this.selectedCourse !== '' && this.selectedCollege !== '' && this.selectedSemester !== '' && this.selectedSubject && this.selectedChapter) {
-        this.initialData = response;
-        let filter = response.filter((e) => +e.chapterId === +this.selectedChapter)
-        this.tempData = filter
-        this.kitchenSinkRows = filter;
-        this.exportCSVData = filter;
-        this.rows = filter
-      } else {
-        this.initialData = response;
-      }
+      this.rows = response;
+      this.tempData = response;
+      this.kitchenSinkRows = response;
+      this.exportCSVData = response;
     });
-
-    if (this.selectedCollege === '') {
-      this._datatablesService.getColleges('collegesList').then(response => {
-        this.collegeList = response
-      });
-    }
 
     // content header
     this.contentHeader = {

@@ -11,6 +11,7 @@ import { locale as english } from 'app/main/tables/subjects/i18n/en';
 import { locale as french } from 'app/main/tables/subjects/i18n/fr';
 import { locale as portuguese } from 'app/main/tables/subjects/i18n/pt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'environments/environment';
 import * as snippet from 'app/main/tables/subjects/datatables.snippetcode';
 
 import { DatatablesService } from 'app/main/tables/subjects/datatables.service';
@@ -53,6 +54,7 @@ export class DatatablesComponent implements OnInit {
   public selectedCourse = '';
   public selectedSemester = '';
   public semesterList: Array<{}>;
+  public imageUrl = environment.apiUrl
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -193,7 +195,7 @@ export class DatatablesComponent implements OnInit {
       formData.append("subjectName", data.subjectName);
       formData.append("description", data.description);
       formData.append("filePath", data.filePath);
-      formData.append("isActive", data.isActive);
+      formData.append("isActive", true as any);
       formData.append("semesterId", this.selectedSemester);
       new ItemsService().childPath('post', 'Subject/UpdateSubject', formData).then((e) => {
         // window.alert(e.data.message)
@@ -206,7 +208,7 @@ export class DatatablesComponent implements OnInit {
       formData.append("subjectName", data.subjectName);
       formData.append("description", data.description);
       formData.append("filePath", data.filePath);
-      formData.append("isActive", data.isActive);
+      formData.append("isActive", true as any);
       formData.append("semesterId", this.selectedSemester);
       new ItemsService().childPath('post', 'Subject/AddSubject', formData).then((e) => {
         // window.alert(e.data.message)

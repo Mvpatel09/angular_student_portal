@@ -181,13 +181,13 @@ export class DatatablesComponent implements OnInit {
 
   submit(data) {
     if (this.editId) {
-      new ItemsService().childPath('post', 'ExamQuestion/UpdateExamQuestion', { id: this.editId, ...data, topicId: this.selectedTopic, ans: data[data.selectedAns] }).then((e) => {
+      new ItemsService().childPath('post', 'ExamQuestion/UpdateExamQuestion', { id: this.editId, ...data, topicId: this.selectedTopic, ans: data[data.selectedAns], isActive: true }).then((e) => {
         this.ngOnInit()
         this.getTopicList(this.selectedTopic)
         this.modalService.dismissAll()
       })
     } else {
-      new ItemsService().childPath('post', 'ExamQuestion/AddExamQuestion', { ...data, topicId: this.selectedTopic, ans: data[data.selectedAns] }).then((e) => {
+      new ItemsService().childPath('post', 'ExamQuestion/AddExamQuestion', { ...data, topicId: this.selectedTopic, isActive: true, ans: data[data.selectedAns] }).then((e) => {
         this.ngOnInit()
         this.getTopicList(this.selectedTopic)
         this.modalService.dismissAll()

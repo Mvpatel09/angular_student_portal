@@ -181,14 +181,14 @@ export class DatatablesComponent implements OnInit {
   submit(data) {
     // window.alert(subjectName + description)
     if (this.editId) {
-      new ItemsService().childPath('post', 'Colleges/UpdateCourses', { id: this.editId, ...data, collegeId: this.selectedCollege }).then((e) => {
+      new ItemsService().childPath('post', 'Colleges/UpdateCourses', { id: this.editId, ...data, collegeId: this.selectedCollege, isActive: true }).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()
 
       })
     } else {
-      new ItemsService().childPath('post', 'Colleges/AddCourses', { ...data, collegeId: this.selectedCollege }).then((e) => {
+      new ItemsService().childPath('post', 'Colleges/AddCourses', { ...data, collegeId: this.selectedCollege, isActive: true }).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()

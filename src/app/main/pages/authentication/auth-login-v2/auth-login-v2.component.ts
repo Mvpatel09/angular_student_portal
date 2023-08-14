@@ -111,6 +111,10 @@ export class AuthLoginV2Component implements OnInit {
       password: ['admin', Validators.required]
     });
 
+    // Object.keys(window.localStorage || {}).map((e) => {
+    //   window.localStorage.removeItem(e)
+    // })
+
     // get return url from route parameters or default to '/'
     this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
 

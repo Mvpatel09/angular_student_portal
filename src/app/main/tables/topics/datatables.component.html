@@ -64,7 +64,7 @@
                     <input id="description" [(ngModel)]="initial.description" name="description" #description
                       type="text" placeholder="" class="form-control" />
                   </div>
-                  <label>Active</label>
+                  <!-- <label>Active</label>
                   <div class="form-group">
                     <label>
                       <input type="radio" [(ngModel)]="initial.isActive" [value]=true name="isActive"
@@ -76,7 +76,7 @@
                         #genderControl="ngModel">
                       No
                     </label>
-                  </div>
+                  </div> -->
                   <label>Is Lock</label>
                   <div class="form-group">
                     <label>
@@ -233,8 +233,14 @@
         </ngx-datatable-column> -->
         <ngx-datatable-column name="topicName" prop="topicName" [width]="120"></ngx-datatable-column>
         <ngx-datatable-column name="description" prop="description" [width]="250"></ngx-datatable-column>
-        <ngx-datatable-column name="filePath" prop="filePath" [width]="120"></ngx-datatable-column>
-        <ngx-datatable-column name="Status" prop="isActive" [width]="120">
+        <ngx-datatable-column name="filePath" prop="filePath" [width]="120">
+          <ng-template let-filePath="value" ngx-datatable-cell-template>
+            <a href="{{this.imageUrl+'/'+filePath}}" target="_blank">
+              view
+            </a>
+          </ng-template>
+        </ngx-datatable-column>
+        <!-- <ngx-datatable-column name="Status" prop="isActive" [width]="120">
           <ng-template let-isActive="value" ngx-datatable-cell-template>
             <div class="badge badge-pill" [ngClass]="{
                   'badge-light-success': isActive != false,
@@ -247,8 +253,8 @@
               }}
             </div>
           </ng-template>
-        </ngx-datatable-column>
-        <ngx-datatable-column name="Actions" [width]="120" [sortable]="false">
+        </ngx-datatable-column> -->
+        <ngx-datatable-column name="Actions" [maxWidth]="100" [sortable]="false">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div class="d-flex align-items-center">
               <div ngbDropdown container="body">

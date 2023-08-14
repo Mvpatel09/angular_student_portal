@@ -11,7 +11,7 @@
       <ng-container *ngFor="let item of item.children">
         <!-- item | if openInNewTab set routerLink & routerLinkActive blank -->
         <li core-menu-vertical-item *ngIf="
-            item.type == 'item' && (this.currentUser.userRoleId==1 ? true :item.title=='Colleges'?false:true) && (item.role ? item.role.includes(currentUser.role) : false || item.role == undefined)
+            item.type == 'item' && (item.role ? item.role.includes(currentUser.role) : false || item.role == undefined)
           " [item]="item" [ngClass]="{ disabled: item.disabled === true }"
           [routerLinkActive]="!item.openInNewTab ? 'active' : ''"
           [routerLinkActiveOptions]="{ exact: item.exactMatch || false }">

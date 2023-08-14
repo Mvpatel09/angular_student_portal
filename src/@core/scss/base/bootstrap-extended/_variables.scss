@@ -49,7 +49,7 @@ $grid-breakpoints: (
   lg: 992px,
   xl: 1200px,
   xxl: 1440px // Custom xxl size
-) !default;
+  ) !default;
 
 $container-max-widths: (
   xs: 0,
@@ -58,42 +58,24 @@ $container-max-widths: (
   lg: 992px,
   xl: 1200px,
   xxl: 1440px // Custom xxl size
-) !default;
+  ) !default;
 // scss-docs-end container-max-widths
 
 // stylelint-disable
 $spacer: 1rem !default;
-$spacers: () !default;
+$spacers: (
+  ) !default;
 // stylelint-disable-next-line scss/dollar-variable-default
-$spacers: map-merge(
-  (
-    0: 0,
-    25: (
-      $spacer * 0.25
-    ),
-    50: (
-      $spacer * 0.5
-    ),
-    75: (
-      $spacer * 0.75
-    ),
-    1: (
-      $spacer
-    ),
-    2: (
-      $spacer * 1.5
-    ),
-    3: (
-      $spacer * 3
-    ),
-    4: (
-      $spacer * 3.5
-    ),
-    5: (
-      $spacer * 4
-    )
-  ),
-  $spacers
+$spacers: map-merge((0: 0,
+      25: ($spacer * 0.25),
+      50: ($spacer * 0.5),
+      75: ($spacer * 0.75),
+      1: ($spacer ),
+      2: ($spacer * 1.5),
+      3: ($spacer * 3),
+      4: ($spacer * 3.5),
+      5: ($spacer * 4)),
+    $spacers
 );
 
 // Body
@@ -168,7 +150,7 @@ $display4-weight: $font-weight-normal !default;
 $lead-font-size: $font-size-base * 1.14 !default;
 $lead-font-weight: $font-weight-normal !default;
 
-$small-font-size: 0.857rem !default;
+$small-font-size: 1rem !default;
 
 $text-muted: #b9b9c3 !default;
 $hr-border-color: $border-color !default;

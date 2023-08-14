@@ -1154,6 +1154,14 @@ export const menu: CoreMenu[] = [
         icon: 'grid',
         url: 'tables/exams'
       },
+      {
+        id: 'tables-datatable',
+        title: 'Sliders',
+        // translate: 'MENU.FT.DATATABLES',
+        type: 'item',
+        icon: 'grid',
+        url: 'tables/sliders'
+      },
     ]
   },
   // Charts & Maps

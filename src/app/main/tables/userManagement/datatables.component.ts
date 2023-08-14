@@ -185,13 +185,13 @@ export class DatatablesComponent implements OnInit {
   submit(data) {
     // window.alert(subjectName + description)
     if (this.editId) {
-      new ItemsService().childPath('post', 'User/UpdateUsers', { id: this.editId, ...data, collegeId: this.selectedCollege, semesterId: this.selectedSemester, courses: this.selectedCourse }).then((e) => {
+      new ItemsService().childPath('post', 'User/UpdateUsers', { id: this.editId, ...data, collegeId: this.selectedCollege, isActive: true, semesterId: this.selectedSemester, courses: this.selectedCourse }).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()
       })
     } else {
-      new ItemsService().childPath('post', 'User/AddUsers', { ...data, collegeId: this.selectedCollege, semesterId: this.selectedSemester, courses: this.selectedCourse }).then((e) => {
+      new ItemsService().childPath('post', 'User/AddUsers', { ...data, collegeId: this.selectedCollege, isActive: true, semesterId: this.selectedSemester, courses: this.selectedCourse }).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()
@@ -296,15 +296,17 @@ export class DatatablesComponent implements OnInit {
       this.initialData = response;
     });
 
-
+    this._datatablesService.getColleges('collegesList').then(response => {
+      this.collegeList = response
+    });
 
     this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
       this.currentUser = this._coreMenuService.currentUser;
       console.log(this.currentUser, "maulik303")
       if (this.currentUser.userRoleId === 1) {
-        this._datatablesService.getColleges('collegesList').then(response => {
-          this.collegeList = response
-        });
+        // this._datatablesService.getColleges('collegesList').then(response => {
+        //   this.collegeList = response
+        // });
       }
     });
     // content header
