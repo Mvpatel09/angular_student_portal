@@ -32,21 +32,21 @@
                 </button>
               </div>
               <div class="modal-body" tabindex="0" ngbAutofocus>
-                <form #userlogin="ngForm" (ngSubmit)="submit(userlogin.value)">
+                <form (ngSubmit)="submit()" [formGroup]="loginForm">
                   <label>Semester</label>
                   <div class="form-group">
-                    <input id="semester" [(ngModel)]="initial.semester" name="semester" #semester type="number"
+                    <input id="semester" formControlName="semester" name="semester" #semester type="number"
                       placeholder="" class="form-control" />
                   </div>
                   <!-- <label>Active</label>
                   <div class="form-group">
                     <label>
-                      <input type="radio" [(ngModel)]="initial.isActive" [value]=true name="isActive"
+                      <input type="radio" formControlName="isActive" [value]=true name="isActive"
                         #genderControl="ngModel">
                       Yes
                     </label>
                     <label>
-                      <input type="radio" [(ngModel)]="initial.isActive" [value]=false name="isActive"
+                      <input type="radio" formControlName="isActive" [value]=false name="isActive"
                         #genderControl="ngModel">
                       No
                     </label>

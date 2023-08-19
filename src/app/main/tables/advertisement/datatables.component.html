@@ -21,8 +21,8 @@
                 <form #userlogin="ngForm" (ngSubmit)="submit(userlogin.value)">
                   <label>File Type</label>
                   <div class="form-group">
-                    <input id="type" [(ngModel)]="initial.type" name="type" #type type="text" placeholder=""
-                      class="form-control" />
+                    <input id="fileType" [(ngModel)]="initial.fileType" name="fileType" #fileType type="text"
+                      placeholder="" class="form-control" />
                   </div>
                   <!-- <label>Description </label>
                   <div class="form-group">
@@ -183,7 +183,7 @@
             </div>
           </ng-template>
         </ngx-datatable-column> -->
-        <ngx-datatable-column name="type" prop="type" [width]="120"></ngx-datatable-column>
+        <ngx-datatable-column name="fileType" prop="fileType" [width]="120"></ngx-datatable-column>
         <ngx-datatable-column name="filePath" prop="filePath" [width]="120">
           <ng-template let-filePath="value" ngx-datatable-cell-template>
             <a href="{{this.imageUrl+'/'+filePath}}" target="_blank">

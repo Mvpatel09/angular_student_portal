@@ -171,7 +171,7 @@ export class DatatablesComponent implements OnInit {
 
   deleteData() {
     console.log(this.editId)
-    new ItemsService().childPath('get', `Slider/DeleteSliderDataSource?id=${this.editId}`).then((e) => {
+    new ItemsService().childPath('get', `Slider/DeleteAdvertiesDoc?id=${this.editId}`).then((e) => {
       // window.alert(e.data.message)
       this.ngOnInit()
       this.modalService.dismissAll()
@@ -195,28 +195,17 @@ export class DatatablesComponent implements OnInit {
       let formData = new FormData();
       formData.append("file", this.file);
       formData.append("id", this.editId.toString());
-      formData.append("isActive", this.initial.isActive);
-      formData.append("type", data.type);
-      formData.append("UpdatedTime", new Date().toISOString() as any);
-      formData.append("createdTime", new Date().toISOString() as any);
-      formData.append("createdBy", 1 as any);
-      formData.append("updatedBy", 1 as any);
-      new ItemsService().childPath('post', 'Slider/UpdateSliderDataSource', formData).then((e) => {
+      formData.append("fileType", data.fileType);
+      new ItemsService().childPath('post', 'Slider/InsertAdvertiesDoc', formData).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()
       })
     } else {
       let formData = new FormData();
+      formData.append("fileType", data.fileType);
       formData.append("file", this.file);
-      formData.append("id", 0 as any);
-      formData.append("isActive", true as any);
-      formData.append("type", data.type);
-      formData.append("createdTime", new Date().toISOString() as any);
-      formData.append("UpdatedTime", new Date().toISOString() as any);
-      formData.append("createdBy", 1 as any);
-      formData.append("updatedBy", 1 as any);
-      new ItemsService().childPath('post', 'Slider/InsertSliderDataSource', formData).then((e) => {
+      new ItemsService().childPath('post', 'Slider/UpdateAdvertiesDoc', formData).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()

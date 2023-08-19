@@ -162,9 +162,14 @@ export class DatatablesComponent implements OnInit {
 
   modalOpenForm(modalForm, row?) {
     console.log(row)
+    this.loginForm.reset()
     if (row) {
       this.initial = row
       this.editId = row.id
+      for (let key in this.loginForm.value) {
+        this.loginForm.get(key).setValue(row[key])
+      }
+      this.loginForm.get('semesterId').setValue(this.selectedSemester)
     } else {
       this.initial = {}
       this.editId = 0
@@ -183,7 +188,8 @@ export class DatatablesComponent implements OnInit {
   }
 
 
-  submit(data) {
+  submit(data = this.loginForm.value) {
+    console.log(data)
     // window.alert(subjectName + description)
     if (this.loginForm.invalid) {
       alert("Please enter required details")
@@ -191,7 +197,7 @@ export class DatatablesComponent implements OnInit {
     }
 
     if (this.editId) {
-      new ItemsService().childPath('post', 'User/UpdateUsers', { id: this.editId, ...data, collegeId: this.selectedCollege, isActive: true, semesterId: this.selectedSemester, courses: this.selectedCourse }).then((e) => {
+      new ItemsService().childPath('post', 'User/UpdateUsers', { id: this.editId, ...data, collegeId: this.selectedCollege, isActive: true, courses: this.selectedCourse }).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()
@@ -203,7 +209,6 @@ export class DatatablesComponent implements OnInit {
         this.modalService.dismissAll()
       })
     }
-
 
   }
 
@@ -303,11 +308,19 @@ export class DatatablesComponent implements OnInit {
    */
   ngOnInit() {
     this.loginForm = this._formBuilder.group({
-      email: ['ashfahfs', [Validators.required, Validators.email]],
-      password: ['asfkjaljj', Validators.required]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      userRoleId: ['', Validators.required],
+      name: ['', Validators.required],
+      userName: ['', Validators.required],
+      contactNo: ['', Validators.required],
+      semesterId: ['', Validators.required],
     });
     this._datatablesService.getDataTableRows().then(response => {
       this.initialData = response;
+      if (this.selectedSemester) {
+        this.semesterOnChange({ name: "", value: this.selectedSemester })
+      }
     });
 
     this._datatablesService.getColleges('collegesList').then(response => {
