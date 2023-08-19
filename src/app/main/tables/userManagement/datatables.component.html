@@ -29,12 +29,18 @@
             <option *ngFor="let option of semesterList" [value]="option.id">{{option.semester}}</option>
           </select>
         </div>
-        <div class="col-2.5 mb-50">
+        <div class="col-1.5 mb-50">
           <button class="btn btn-primary ml-1 mt-2" rippleEffect (click)="modalOpenForm(modalForm)">
-            <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add New Record</span>
+            <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add</span>
           </button>
         </div>
-        <div class="col-2 mb-50">
+        <div class="col-1.5 mb-50">
+          <button class="btn btn-primary ml-1 mt-2" (click)="file.click()" rippleEffect>
+            <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Import</span>
+            <input type="file" hidden #file (change)="csvUpload($event)" />
+          </button>
+        </div>
+        <div class="col-1.5 mb-50">
           <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right ml-1 mt-2" rippleEffect>Export
             CSV</a>
         </div>
@@ -48,7 +54,7 @@
               </button>
             </div>
             <div class="modal-body" tabindex="0" ngbAutofocus>
-              <form #userlogin="ngForm" (ngSubmit)="submit(userlogin.value)">
+              <form #userlogin="ngForm" (ngSubmit)="submit(userlogin.value)" [formGroup]="loginForm">
                 <label>Role</label>
                 <select class="custom-select" name="userRoleId" [(ngModel)]="initial.userRoleId" id="userRoleId"
                   required>
@@ -60,6 +66,15 @@
                   <input id="name" [(ngModel)]="initial.name" name="name" #name type="text" placeholder=""
                     class="form-control" />
                 </div>
+                <div *ngIf="this.editId">
+
+                  <label>Semester</label>
+                  <select [disabled]="!editId" class="custom-select" #semesterId name="semesterId" id="semesterId"
+                    [(ngModel)]="initial.semesterId">
+                    <option *ngFor="let option of semesterList" [value]="option.id">{{option.semester}}</option>
+                  </select>
+                </div>
+
                 <label>User Name </label>
                 <div class="form-group">
                   <input id="userName" [(ngModel)]="initial.userName" name="userName" #userName type="text"

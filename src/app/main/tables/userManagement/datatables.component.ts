@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ColumnMode, DatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 
 import { CoreTranslationService } from '@core/services/translation.service';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { locale as german } from 'app/main/tables/userManagement/i18n/de';
 import { locale as english } from 'app/main/tables/userManagement/i18n/en';
 import { locale as french } from 'app/main/tables/userManagement/i18n/fr';
@@ -28,6 +28,7 @@ export class DatatablesComponent implements OnInit {
   private tempData = [];
 
   // public
+  public loginForm: FormGroup;
   public contentHeader: object;
   public rows: any;
   public initialData: any;
@@ -184,6 +185,11 @@ export class DatatablesComponent implements OnInit {
 
   submit(data) {
     // window.alert(subjectName + description)
+    if (this.loginForm.invalid) {
+      alert("Please enter required details")
+      return;
+    }
+
     if (this.editId) {
       new ItemsService().childPath('post', 'User/UpdateUsers', { id: this.editId, ...data, collegeId: this.selectedCollege, isActive: true, semesterId: this.selectedSemester, courses: this.selectedCourse }).then((e) => {
         // window.alert(e.data.message)
@@ -205,11 +211,11 @@ export class DatatablesComponent implements OnInit {
     console.log(name, value)
     console.log(this.initialData, this.initialData.filter((e: any) => +e.collegeId === +value))
     this._datatablesService.getColleges('coursesList', `?CollegeId=${value}`).then((response) => {
-      let filter = this.initialData.filter((e) => +e.collegeId === +value)
-      this.tempData = filter
-      this.kitchenSinkRows = filter;
-      this.exportCSVData = filter;
-      this.rows = filter
+      // let filter = this.initialData.filter((e) => +e.collegeId === +value)
+      // this.tempData = filter
+      // this.kitchenSinkRows = filter;
+      // this.exportCSVData = filter;
+      // this.rows = filter
       this.coursesList = response
       this.semesterList = []
       this.selectedCourse = '';
@@ -220,11 +226,11 @@ export class DatatablesComponent implements OnInit {
   coursesOnChange({ name, value }) {
     console.log(name, value)
     this._datatablesService.getColleges('semesterList', `?CollegeId=${value}&CourseId=${value}`).then((response) => {
-      let filter = this.initialData.filter((e) => +e.collegeId === +this.selectedCollege && +e.courses === +value)
-      this.tempData = filter
-      this.kitchenSinkRows = filter;
-      this.exportCSVData = filter;
-      this.rows = filter
+      // let filter = this.initialData.filter((e) => +e.collegeId === +this.selectedCollege && +e.courses === +value)
+      // this.tempData = filter
+      // this.kitchenSinkRows = filter;
+      // this.exportCSVData = filter;
+      // this.rows = filter
       this.semesterList = response
       this.selectedSemester = '';
     })
@@ -274,13 +280,17 @@ export class DatatablesComponent implements OnInit {
     this.chkBoxSelected.push(...selected);
   }
 
+  csvUpload(e) {
+    console.log(e.target.files[0])
+  }
+
   /**
    * Constructor
    *
    * @param {DatatablesService} _datatablesService
    * @param {CoreTranslationService} _coreTranslationService
    */
-  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private modalService: NgbModal, private _coreMenuService: CoreMenuService) {
+  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private modalService: NgbModal, private _formBuilder: FormBuilder, private _coreMenuService: CoreMenuService) {
     this._unsubscribeAll = new Subject();
     this._coreTranslationService.translate(english, french, german, portuguese);
   }
@@ -292,6 +302,10 @@ export class DatatablesComponent implements OnInit {
    * On init
    */
   ngOnInit() {
+    this.loginForm = this._formBuilder.group({
+      email: ['ashfahfs', [Validators.required, Validators.email]],
+      password: ['asfkjaljj', Validators.required]
+    });
     this._datatablesService.getDataTableRows().then(response => {
       this.initialData = response;
     });

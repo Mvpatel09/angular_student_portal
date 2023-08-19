@@ -32,6 +32,7 @@
     "@circlon/angular-tree-component": "11.0.4",
     "@ctrl/ngx-csv": "4.0.0",
     "@ctrl/ngx-rightclick": "4.0.0",
+    "@dimpu/ngx-quill": "^7.0.10",
     "@fullcalendar/angular": "5.7.1",
     "@fullcalendar/daygrid": "5.7.2",
     "@fullcalendar/interaction": "5.7.2",
@@ -69,7 +70,7 @@
     "ngx-mask": "12.0.0",
     "ngx-perfect-scrollbar": "10.1.1",
     "ngx-plyr": "4.0.0",
-    "ngx-quill": "14.0.0",
+    "ngx-quill": "^14.0.0",
     "ngx-swiper-wrapper": "10.0.0",
     "ngx-toastr": "14.0.0",
     "node-waves": "0.7.6",
@@ -99,5 +100,6 @@
     "karma-jasmine-html-reporter": "1.5.0",
     "typescript": "4.4.4",
     "webpack-bundle-analyzer": "4.4.2"
-  }
+  },
+  "homepage": "https://mandreducation.com/UI"
 }

@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   hmr: false,
   apiUrl: 'http://sunnyradadiya-001-site1.ftempurl.com'
 };

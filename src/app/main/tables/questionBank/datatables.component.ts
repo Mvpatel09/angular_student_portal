@@ -28,6 +28,7 @@ export class DatatablesComponent implements OnInit {
   private tempData = [];
 
   // public
+  @ViewChild('editor') editor;
   public contentHeader: object;
   public rows: any;
   public selected = [];
@@ -181,13 +182,13 @@ export class DatatablesComponent implements OnInit {
 
   submit(data) {
     if (this.editId) {
-      new ItemsService().childPath('post', 'ExamQuestion/UpdateExamQuestion', { id: this.editId, ...data, topicId: this.selectedTopic, ans: data[data.selectedAns], isActive: true }).then((e) => {
+      new ItemsService().childPath('post', 'ExamQuestion/UpdateExamQuestion', { id: this.editId, description: this.editor, ...data, topicId: this.selectedTopic, ans: data[data.selectedAns], isActive: true }).then((e) => {
         this.ngOnInit()
         this.getTopicList(this.selectedTopic)
         this.modalService.dismissAll()
       })
     } else {
-      new ItemsService().childPath('post', 'ExamQuestion/AddExamQuestion', { ...data, topicId: this.selectedTopic, isActive: true, ans: data[data.selectedAns] }).then((e) => {
+      new ItemsService().childPath('post', 'ExamQuestion/AddExamQuestion', { ...data, topicId: this.selectedTopic, description: this.editor, isActive: true, ans: data[data.selectedAns] }).then((e) => {
         this.ngOnInit()
         this.getTopicList(this.selectedTopic)
         this.modalService.dismissAll()
@@ -279,6 +280,29 @@ export class DatatablesComponent implements OnInit {
         this.initialData = response;
       }
     });
+  }
+
+  modules = {
+    formula: true,
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic', 'underline'],
+      ['formula'],
+      ['image', 'code-block']
+    ]
+  };
+
+  logChange({ html }) {
+    console.log(html)
+    this.editor = html
+  }
+
+  add3Dots(string, limit = 20) {
+    string = string.replace(/(<([^>]+)>)/ig, '')
+    if (string.length > limit) {
+      string = string.substring(0, limit) + "...";
+    }
+    return string;
   }
 
 

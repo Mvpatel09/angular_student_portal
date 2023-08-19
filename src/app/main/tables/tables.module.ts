@@ -14,9 +14,10 @@ import { CollegesModule } from './colleges/datatables.module';
 import { AddExamQuestionsModule } from './addExamQuestions/datatables.module';
 import { ExamQuestionsListModule } from './examQuestionsList/datatables.module';
 import { SlidersModule } from './sliders/datatables.module';
+import { AdvertisementModule } from './advertisement/datatables.module';
 
 @NgModule({
   declarations: [],
-  imports: [ChaptersModule, SubjectsModule, TopicsModule, SubTopicsModule, CoursesModule, UserManagementModule, ExamsModule, QuestionBankModule, SemestersModule, CollegesModule, AddExamQuestionsModule, ExamQuestionsListModule, SlidersModule]
+  imports: [ChaptersModule, SubjectsModule, TopicsModule, SubTopicsModule, CoursesModule, UserManagementModule, ExamsModule, QuestionBankModule, SemestersModule, CollegesModule, AddExamQuestionsModule, ExamQuestionsListModule, SlidersModule, AdvertisementModule]
 })
 export class TablesModule { }

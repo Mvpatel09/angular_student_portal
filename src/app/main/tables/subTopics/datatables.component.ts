@@ -29,6 +29,7 @@ export class DatatablesComponent implements OnInit {
   private tempData = [];
 
   // public
+  @ViewChild('editor') editor;
   public contentHeader: object;
   public rows: any;
   public selected = [];
@@ -212,15 +213,15 @@ export class DatatablesComponent implements OnInit {
     if (this.editId) {
       let formData = new FormData();
       formData.append("file", this.file);
-      for (let i = 0; i < this.attachMents.length; i++) {
-        formData.append("attachMents", this.attachMents[i] as any);
-      }
+      // for (let i = 0; i < this.attachMents.length; i++) {
+      //   formData.append("attachMents", this.attachMents[i] as any);
+      // }
       formData.append("filePath", this.filePath);
       formData.append("id", this.editId.toString());
       formData.append("subTopicName", data.subTopicName);
-      formData.append("description", data.description);
+      formData.append("description", this.editor);
       formData.append("filePath", data.filePath);
-      formData.append("isActive", true as any);
+      formData.append("isActive", data.isActive);
       formData.append("topicId", this.selectedTopic);
       new ItemsService().childPath('post', 'Topic/UpdateSubTopics', formData).then((e) => {
         // window.alert(e.data.message)
@@ -230,14 +231,14 @@ export class DatatablesComponent implements OnInit {
     } else {
       let formData = new FormData();
       formData.append("file", this.file);
-      for (let i = 0; i < this.attachMents.length; i++) {
-        formData.append("attachMents", this.attachMents[i] as any);
-      }
+      // for (let i = 0; i < this.attachMents.length; i++) {
+      //   formData.append("attachMents", this.attachMents[i] as any);
+      // }
       formData.append("filePath", this.filePath);
       formData.append("subTopicName", data.subTopicName);
-      formData.append("description", data.description);
+      formData.append("description", this.editor);
       formData.append("filePath", data.filePath);
-      formData.append("isActive", true as any);
+      formData.append("isActive", data.isActive);
       formData.append("topicId", this.selectedTopic);
       new ItemsService().childPath('post', 'Topic/AddSubTopics', formData).then((e) => {
         // window.alert(e.data.message)
@@ -314,6 +315,29 @@ export class DatatablesComponent implements OnInit {
     this.kitchenSinkRows = filter;
     this.exportCSVData = filter;
     this.rows = filter
+  }
+
+  modules = {
+    formula: true,
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic', 'underline'],
+      ['formula'],
+      ['image', 'code-block']
+    ]
+  };
+
+  logChange({ html }) {
+    console.log(html)
+    this.editor = html
+  }
+
+  add3Dots(string, limit = 20) {
+    string = string.replace(/(<([^>]+)>)/ig, '')
+    if (string.length > limit) {
+      string = string.substring(0, limit) + "...";
+    }
+    return string;
   }
 
 

@@ -29,6 +29,7 @@ export class DatatablesComponent implements OnInit {
   private tempData = [];
 
   // public
+  @ViewChild('editor') editor;
   public contentHeader: object;
   public rows: any;
   public selected = [];
@@ -185,7 +186,7 @@ export class DatatablesComponent implements OnInit {
 
   submit(data) {
     // window.alert(subjectName + description)
-    console.log(data)
+    console.log(typeof this.editor)
     // return
     console.log(this.editId, this.initial, data)
     if (this.editId) {
@@ -193,8 +194,8 @@ export class DatatablesComponent implements OnInit {
       formData.append("file", this.file);
       formData.append("id", this.editId.toString());
       formData.append("subjectName", data.subjectName);
-      formData.append("description", data.description);
-      formData.append("filePath", data.filePath);
+      formData.append("description", this.editor);
+      formData.append("filePath", "test");
       formData.append("isActive", true as any);
       formData.append("semesterId", this.selectedSemester);
       new ItemsService().childPath('post', 'Subject/UpdateSubject', formData).then((e) => {
@@ -206,8 +207,8 @@ export class DatatablesComponent implements OnInit {
       let formData = new FormData();
       formData.append("file", this.file);
       formData.append("subjectName", data.subjectName);
-      formData.append("description", data.description);
-      formData.append("filePath", data.filePath);
+      formData.append("description", this.editor);
+      formData.append("filePath", "test");
       formData.append("isActive", true as any);
       formData.append("semesterId", this.selectedSemester);
       new ItemsService().childPath('post', 'Subject/AddSubject', formData).then((e) => {
@@ -259,6 +260,30 @@ export class DatatablesComponent implements OnInit {
     this.exportCSVData = filter;
     this.rows = filter
   }
+
+  modules = {
+    formula: true,
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic', 'underline'],
+      ['formula'],
+      ['image', 'code-block']
+    ]
+  };
+
+  logChange({ html }) {
+    console.log(html)
+    this.editor = html
+  }
+
+  add3Dots(string, limit = 20) {
+    string = string.replace(/(<([^>]+)>)/ig, '')
+    if (string.length > limit) {
+      string = string.substring(0, limit) + "...";
+    }
+    return string;
+  }
+
   /**
    * For ref only, log selected values
    *

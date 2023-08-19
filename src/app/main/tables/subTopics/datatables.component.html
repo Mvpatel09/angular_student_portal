@@ -67,11 +67,13 @@
                       type="text" placeholder="" class="form-control" />
                   </div>
                   <label>Description </label>
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <input id="description" [(ngModel)]="initial.description" name="description" #description
                       type="text" placeholder="" class="form-control" />
-                  </div>
-                  <!-- <label>Active</label>
+                  </div> -->
+                  <ngx-quill [(ngModel)]="initial.description" #editor [modules]="modules"
+                    (change)="logChange($event);"></ngx-quill>
+                  <label>Active</label>
                   <div class="form-group">
                     <label>
                       <input type="radio" [(ngModel)]="initial.isActive" [value]=true name="isActive"
@@ -83,22 +85,22 @@
                         #genderControl="ngModel">
                       No
                     </label>
-                  </div> -->
+                  </div>
                   <label>3D Image</label>
                   <div class="form-group">
                     <input id="filePath" [(ngModel)]="initial.filePath" name="filePath" #filePath type="file"
                       (change)="onFileSelected($event)" placeholder="" class="form-control" />
                   </div>
-                  <label>File</label>
+                  <label>Video</label>
                   <div class="form-group">
                     <input id="file" (change)="onFileSelected($event)" [(ngModel)]="initial.file" name="file" #filePath
                       type="file" placeholder="" class="form-control" />
                   </div>
-                  <label>AttachMents</label>
+                  <!-- <label>AttachMents</label>
                   <div class="form-group">
                     <input id="attachMents" (change)="onFileSelected($event)" [(ngModel)]="initial.attachMents"
                       name="attachMents" #attachMents type="file" placeholder="" class="form-control" multiple />
-                  </div>
+                  </div> -->
                   <button type="submit" class="btn btn-primary" rippleEffect>
                     Submit
                   </button>
@@ -231,12 +233,24 @@
           </ng-template>
         </ngx-datatable-column> -->
         <ngx-datatable-column name="subTopicName" prop="subTopicName" [width]="120"></ngx-datatable-column>
-        <ngx-datatable-column name="description" prop="description" [width]="250"></ngx-datatable-column>
-        <ngx-datatable-column name="filePath" prop="filePath" [width]="120">
+        <ngx-datatable-column name="description" prop="description" [width]="250">
+          <ng-template let-description="value" ngx-datatable-cell-template>
+            <div class="tooltip-container">
+              {{add3Dots(description)}}
+              <!-- <div class="tooltip" [innerHtml]="description"></div> -->
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+        <!-- <ngx-datatable-column name="filePath" prop="filePath" [width]="120">
           <ng-template let-filePath="value" ngx-datatable-cell-template>
             <a href="{{this.imageUrl+'/'+filePath}}" target="_blank">
               view
             </a>
+          </ng-template>
+        </ngx-datatable-column> -->
+        <ngx-datatable-column name="filePath" prop="filePath" [width]="120">
+          <ng-template let-filePath="value" ngx-datatable-cell-template>
+            <img src="{{this.imageUrl+'/'+filePath}}" height="45" width="45" />
           </ng-template>
         </ngx-datatable-column>
         <!-- <ngx-datatable-column name="Status" prop="isActive" [width]="120">

@@ -91,10 +91,12 @@
                     <option value="d">D</option>
                   </select>
                   <label>Description</label>
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <input id="description" [(ngModel)]="initial.description" name="description" #description
                       type="text" placeholder="" class="form-control" />
-                  </div>
+                  </div> -->
+                  <ngx-quill [(ngModel)]="initial.description" #editor [modules]="modules"
+                    (change)="logChange($event);"></ngx-quill>
                   <!-- <label>Active</label>
                   <div class="form-group">
                     <label>
@@ -241,7 +243,14 @@
           </ng-template>
         </ngx-datatable-column> -->
         <ngx-datatable-column name="question" prop="question" [width]="120"></ngx-datatable-column>
-        <ngx-datatable-column name="description" prop="description" [width]="250"></ngx-datatable-column>
+        <ngx-datatable-column name="description" prop="description" [width]="250">
+          <ng-template let-description="value" ngx-datatable-cell-template>
+            <div class="tooltip-container">
+              {{add3Dots(description)}}
+              <!-- <div class="tooltip" [innerHtml]="description"></div> -->
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
         <!-- <ngx-datatable-column name="filePath" prop="filePath" [width]="120"></ngx-datatable-column> -->
         <!-- <ngx-datatable-column name="Status" prop="isActive" [width]="120">
           <ng-template let-isActive="value" ngx-datatable-cell-template>

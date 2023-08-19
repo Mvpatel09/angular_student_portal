@@ -12,6 +12,7 @@ import { ContentHeaderModule } from 'app/layout/components/content-header/conten
 
 import { DatatablesComponent } from 'app/main/tables/topics/datatables.component';
 import { DatatablesService } from 'app/main/tables/topics/datatables.service';
+import { NgxQuillModule } from '@dimpu/ngx-quill'
 
 const routes: Routes = [
   {
@@ -34,7 +35,8 @@ const routes: Routes = [
     ContentHeaderModule,
     CardSnippetModule,
     NgxDatatableModule,
-    CsvModule
+    CsvModule,
+    NgxQuillModule
   ],
   providers: [DatatablesService]
 })

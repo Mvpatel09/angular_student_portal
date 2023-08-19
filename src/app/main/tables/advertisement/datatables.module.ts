@@ -10,13 +10,12 @@ import { CoreCommonModule } from '@core/common.module';
 import { CardSnippetModule } from '@core/components/card-snippet/card-snippet.module';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 
-import { DatatablesComponent } from 'app/main/tables/subTopics/datatables.component';
-import { DatatablesService } from 'app/main/tables/subTopics/datatables.service';
-import { NgxQuillModule } from '@dimpu/ngx-quill'
+import { DatatablesComponent } from 'app/main/tables/advertisement/datatables.component';
+import { DatatablesService } from 'app/main/tables/advertisement/datatables.service';
 
 const routes: Routes = [
   {
-    path: 'sub-topics',
+    path: 'advertisement',
     component: DatatablesComponent,
     resolve: {
       datatables: DatatablesService
@@ -35,9 +34,8 @@ const routes: Routes = [
     ContentHeaderModule,
     CardSnippetModule,
     NgxDatatableModule,
-    CsvModule,
-    NgxQuillModule
+    CsvModule
   ],
   providers: [DatatablesService]
 })
-export class SubTopicsModule { }
+export class AdvertisementModule { }

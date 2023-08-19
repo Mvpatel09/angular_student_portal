@@ -1162,6 +1162,14 @@ export const menu: CoreMenu[] = [
         icon: 'grid',
         url: 'tables/sliders'
       },
+      {
+        id: 'tables-datatable',
+        title: 'Advertisement',
+        // translate: 'MENU.FT.DATATABLES',
+        type: 'item',
+        icon: 'grid',
+        url: 'tables/advertisement'
+      },
     ]
   },
   // Charts & Maps
