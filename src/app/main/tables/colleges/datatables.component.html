@@ -23,21 +23,25 @@
                   <div class="form-group">
                     <input id="name" formControlName="name" name="name" #name type="text" placeholder=""
                       class="form-control" />
+                    <p class="warn-text">{{getError("name","Name is required")}}</p>
                   </div>
                   <label>contact Details </label>
                   <div class="form-group">
                     <input id="contactDetails" formControlName="contactDetails" name="contactDetails" type="number"
                       #contactDetails type="text" placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("contactDetails","contact is required")}}</p>
                   </div>
                   <label>Email </label>
                   <div class="form-group">
                     <input id="email" formControlName="email" name="email" #email type="text" placeholder=""
                       class="form-control" />
+                    <p class="warn-text">{{getError("email","email is required")}}</p>
                   </div>
                   <label>Address </label>
                   <div class="form-group">
                     <input id="address" formControlName="address" name="address" #address type="text" placeholder=""
                       class="form-control" />
+                    <p class="warn-text">{{getError("address","address is required")}}</p>
                   </div>
                   <!-- <label>Active</label>
                   <div class="form-group">
@@ -61,7 +65,7 @@
             <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add New Record</span>
           </button>
 
-          <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right mr-1" rippleEffect>Export
+          <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right pt-1 mr-1" rippleEffect>Export
             CSV</a>
         </div>
         <div class="col-md-6 col-12">

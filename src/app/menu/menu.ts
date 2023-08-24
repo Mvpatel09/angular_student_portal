@@ -1060,6 +1060,14 @@ export const menu: CoreMenu[] = [
       // },
       {
         id: 'tables-datatable',
+        title: 'Dashboard',
+        // translate: 'MENU.FT.DATATABLES',
+        type: 'item',
+        icon: 'grid',
+        url: 'dashboard/ecommerce'
+      },
+      {
+        id: 'tables-datatable',
         title: 'Users Management',
         // translate: 'MENU.FT.DATATABLES',
         type: 'item',

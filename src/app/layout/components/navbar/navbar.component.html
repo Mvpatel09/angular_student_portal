@@ -77,7 +77,7 @@
         </ng-container>
       </a>
       <div ngbDropdownMenu aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-right">
-        <a ngbDropdownItem [routerLink]="['/pages/profile']"><span [data-feather]="'user'" [class]="'mr-50'"></span>
+        <!-- <a ngbDropdownItem [routerLink]="['/pages/profile']"><span [data-feather]="'user'" [class]="'mr-50'"></span>
           Profile</a><a ngbDropdownItem [routerLink]="['/apps/email']"><span [data-feather]="'mail'"
             [class]="'mr-50'"></span> Inbox</a><a ngbDropdownItem [routerLink]="['/apps/todo']"><span
             [data-feather]="'check-square'" [class]="'mr-50'"></span> Task</a><a ngbDropdownItem
@@ -87,7 +87,13 @@
             [class]="'mr-50'"></span> Settings</a><a ngbDropdownItem [routerLink]="['/pages/pricing']"><span
             [data-feather]="'credit-card'" [class]="'mr-50'"></span> Pricing</a><a ngbDropdownItem
           [routerLink]="['/pages/faq']"><span [data-feather]="'help-circle'" [class]="'mr-50'"></span> FAQ</a><a
-          ngbDropdownItem (click)="logout()"><span [data-feather]="'power'" [class]="'mr-50'"></span> Logout</a>
+          ngbDropdownItem (click)="logout()"><span [data-feather]="'power'" [class]="'mr-50'"></span> Logout</a> -->
+        <!-- <a ngbDropdownItem [routerLink]="['/pages/profile']"><span [data-feather]="'user'" [class]="'mr-50'"></span>
+          Profile</a> -->
+        <a ngbDropdownItem [routerLink]="['/pages/account-settings']"><span [data-feather]="'settings'"
+            [class]="'mr-50'"></span> Settings</a>
+        <div class="dropdown-divider"></div>
+        <a ngbDropdownItem (click)="logout()"><span [data-feather]="'power'" [class]="'mr-50'"></span> Logout</a>
       </div>
     </li>
     <!--/ User Dropdown -->

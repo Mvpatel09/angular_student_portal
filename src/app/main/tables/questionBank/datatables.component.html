@@ -60,52 +60,60 @@
                 </button>
               </div>
               <div class="modal-body" tabindex="0" ngbAutofocus>
-                <form #userlogin="ngForm" (ngSubmit)="submit(userlogin.value)">
+                <form (ngSubmit)="submit()" [formGroup]="loginForm">
                   <label>Question</label>
                   <div class="form-group">
-                    <input id="question" [(ngModel)]="initial.question" name="question" #question type="text"
-                      placeholder="" class="form-control" />
+                    <input id="question" formControlName="question" name="question" #question type="text" placeholder=""
+                      class="form-control" />
+                    <p class="warn-text">{{getError("question","Question is required")}}</p>
                   </div>
                   <label>A:</label>
                   <div class="form-group">
-                    <input id="a" [(ngModel)]="initial.a" name="a" #a type="text" placeholder="" class="form-control" />
+                    <input id="a" formControlName="a" name="a" #a type="text" placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("a","Select A. option")}}</p>
                   </div>
                   <label>B:</label>
                   <div class="form-group">
-                    <input id="b" [(ngModel)]="initial.b" name="b" #b type="text" placeholder="" class="form-control" />
+                    <input id="b" formControlName="b" name="b" #b type="text" placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("b","Select B. option")}}</p>
                   </div>
                   <label>C:</label>
                   <div class="form-group">
-                    <input id="c" [(ngModel)]="initial.c" name="c" #c type="text" placeholder="" class="form-control" />
+                    <input id="c" formControlName="c" name="c" #c type="text" placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("c","Select C. option")}}</p>
                   </div>
                   <label>D:</label>
                   <div class="form-group">
-                    <input id="d" [(ngModel)]="initial.d" name="d" #d type="text" placeholder="" class="form-control" />
+                    <input id="d" formControlName="d" name="d" #d type="text" placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("d","Select D. option")}}</p>
                   </div>
                   <label>Ans.</label>
-                  <select class="custom-select" name="selectedAns" [(ngModel)]="initial.selectedAns" id="selectedAns"
-                    required>
+                  <select style="height: 35px !important;font-size: 16px !important;" class="custom-select"
+                    name="selectedAns" formControlName="selectedAns" id="selectedAns" required>
                     <option value="a">A</option>
                     <option value="b">B</option>
                     <option value="c">C</option>
                     <option value="d">D</option>
                   </select>
+                  <p class="warn-text">{{getError("selectedAns","Selected Answer semester")}}</p>
+                  <br />
                   <label>Description</label>
                   <!-- <div class="form-group">
-                    <input id="description" [(ngModel)]="initial.description" name="description" #description
+                    <input id="description" formControlName="description" name="description" #description
                       type="text" placeholder="" class="form-control" />
                   </div> -->
-                  <ngx-quill [(ngModel)]="initial.description" #editor [modules]="modules"
+                  <ngx-quill formControlName="description" #editor [modules]="modules"
                     (change)="logChange($event);"></ngx-quill>
+                  <br />
                   <!-- <label>Active</label>
                   <div class="form-group">
                     <label>
-                      <input type="radio" [(ngModel)]="initial.isActive" [value]=true name="isActive"
+                      <input type="radio" formControlName="isActive" [value]=true name="isActive"
                         #genderControl="ngModel">
                       Yes
                     </label>
                     <label>
-                      <input type="radio" [(ngModel)]="initial.isActive" [value]=false name="isActive"
+                      <input type="radio" formControlName="isActive" [value]=false name="isActive"
                         #genderControl="ngModel">
                       No
                     </label>
@@ -120,7 +128,7 @@
             <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add New Record</span>
           </button>
 
-          <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right mr-1" rippleEffect>Export
+          <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right pt-1 mr-1" rippleEffect>Export
             CSV</a>
         </div>
         <div class="col-md-6 col-12">

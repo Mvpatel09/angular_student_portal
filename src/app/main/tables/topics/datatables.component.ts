@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ColumnMode, DatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 
 import { CoreTranslationService } from '@core/services/translation.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { locale as german } from 'app/main/tables/topics/i18n/de';
 import { locale as english } from 'app/main/tables/topics/i18n/en';
 import { locale as french } from 'app/main/tables/topics/i18n/fr';
@@ -73,6 +73,7 @@ export class DatatablesComponent implements OnInit {
   editId: any;
   initial: any;
   file: any;
+  isSubmitted: boolean;
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
@@ -179,9 +180,18 @@ export class DatatablesComponent implements OnInit {
     }
   }
 
+  getError(k, message) {
+    const controlErrors: ValidationErrors = this.loginForm.get(k).errors;
+    if (controlErrors !== null && this.isSubmitted) {
+      return message;
+    }
+    return "";
+  }
+
   modalOpenForm(modalForm, row?) {
     console.log(row)
     this.loginForm.reset()
+    this.isSubmitted = false;
     if (row) {
       this.initial = row
       this.editId = row.id
@@ -209,8 +219,8 @@ export class DatatablesComponent implements OnInit {
   submit(data = this.loginForm.value) {
     console.log(data)
     // window.alert(subjectName + description)
+    this.isSubmitted = true;
     if (this.loginForm.invalid) {
-      alert("Please enter required details")
       return;
     }
     if (this.editId) {
@@ -386,8 +396,8 @@ export class DatatablesComponent implements OnInit {
       topicName: ['', Validators.required],
       description: [''],
       file: ['', Validators.required],
-      isLock: [true],
-      attachMents: [''],
+      isLock: [true, Validators.required],
+      attachMents: ['', Validators.required],
     });
     this._datatablesService.getDataTableRows().then(response => {
       if (this.selectedCourse !== '' && this.selectedCollege !== '' && this.selectedSemester !== '' && this.selectedSubject && this.selectedChapter) {

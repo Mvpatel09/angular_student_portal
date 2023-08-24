@@ -9,7 +9,7 @@ export const snippetCodeKitchenSink: snippetCode = {
       ><span class="d-none d-sm-inline-block">Add New Record</span>
     </button>
 
-    <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right mr-1" rippleEffect
+    <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right pt-1 mr-1" rippleEffect
       >Export CSV</a
     >
   </div>

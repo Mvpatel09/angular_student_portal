@@ -41,7 +41,8 @@
           </button>
         </div>
         <div class="col-1.5 mb-50">
-          <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right ml-1 mt-2" rippleEffect>Export
+          <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right pt-1 ml-1 mt-2"
+            rippleEffect>Export
             CSV</a>
         </div>
         <div class="col-12 mb-50">
@@ -56,34 +57,44 @@
             <div class="modal-body" tabindex="0" ngbAutofocus>
               <form (ngSubmit)="submit()" [formGroup]="loginForm">
                 <label>Role</label>
-                <select class="custom-select" formControlName="userRoleId" name="userRoleId" id="userRoleId" required>
+                <select class="custom-select" style="height: 35px !important;font-size: 16px !important;"
+                  formControlName="userRoleId" name="userRoleId" id="userRoleId" required>
                   <option value="2">User</option>
                   <option value="3">College</option>
                 </select>
+                <p class="warn-text">{{getError("userRoleId","Select user")}}</p>
                 <label>Name</label>
                 <div class="form-group">
                   <input id="name" formControlName="name" name="name" #name type="text" placeholder=""
                     class="form-control" />
+                  <p class="warn-text">{{getError("name","Name is required")}}</p>
                 </div>
+
                 <div *ngIf="this.editId">
 
                   <label>Semester</label>
-                  <select [disabled]="!editId" class="custom-select" formControlName="semesterId" #semesterId
+                  <select [disabled]="!editId" class="custom-select"
+                    style="height: 35px !important;font-size: 16px !important;" formControlName="semesterId" #semesterId
                     name="semesterId" id="semesterId">
                     <option *ngFor="let option of semesterList" [value]="option.id">{{option.semester}}</option>
                   </select>
+                  <p class="warn-text">{{getError("semesterId","Select semester")}}</p>
                 </div>
 
                 <label>User Name </label>
                 <div class="form-group">
                   <input id="userName" formControlName="userName" name="userName" #userName type="text" placeholder=""
                     class="form-control" />
+                  <p class="warn-text">{{getError("userName","Username is required")}}</p>
                 </div>
+
                 <label>Password </label>
                 <div class="form-group">
                   <input id="password" formControlName="password" name="password" #password type="password"
                     placeholder="" class="form-control" />
+                  <p class="warn-text">{{getError("password","Password is required")}}</p>
                 </div>
+
                 <!-- <label>Profile Path</label>
                 <div class="form-group">
                   <input id="profilePath" formControlName="profilePath" (change)="onFileSelected($event)"
@@ -93,12 +104,16 @@
                 <div class="form-group">
                   <input id="contactNo" formControlName="contactNo" name="contactNo" #contactNo type="text"
                     placeholder="" class="form-control" />
+                  <p class="warn-text">{{getError("contactNo","Contact is required")}}</p>
                 </div>
+
                 <label>Email</label>
                 <div class="form-group">
                   <input id="email" formControlName="email" name="email" #email type="text" placeholder=""
                     class="form-control" />
+                  <p class="warn-text">{{getError("email","Email is required")}}</p>
                 </div>
+
                 <!-- <label>Active</label>
                 <div class="form-group">
                   <label>

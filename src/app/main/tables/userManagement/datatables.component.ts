@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ColumnMode, DatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 
 import { CoreTranslationService } from '@core/services/translation.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ValidationErrors } from '@angular/forms';
 import { locale as german } from 'app/main/tables/userManagement/i18n/de';
 import { locale as english } from 'app/main/tables/userManagement/i18n/en';
 import { locale as french } from 'app/main/tables/userManagement/i18n/fr';
@@ -29,6 +29,7 @@ export class DatatablesComponent implements OnInit {
 
   // public
   public loginForm: FormGroup;
+  public isSubmitted = false;
   public contentHeader: object;
   public rows: any;
   public initialData: any;
@@ -163,6 +164,7 @@ export class DatatablesComponent implements OnInit {
   modalOpenForm(modalForm, row?) {
     console.log(row)
     this.loginForm.reset()
+    this.isSubmitted = false;
     if (row) {
       this.initial = row
       this.editId = row.id
@@ -187,15 +189,21 @@ export class DatatablesComponent implements OnInit {
     })
   }
 
+  getError(k, message) {
+    const controlErrors: ValidationErrors = this.loginForm.get(k).errors;
+    if (controlErrors !== null && this.isSubmitted) {
+      return message;
+    }
+    return "";
+  }
+
 
   submit(data = this.loginForm.value) {
-    console.log(data)
     // window.alert(subjectName + description)
+    this.isSubmitted = true;
     if (this.loginForm.invalid) {
-      alert("Please enter required details")
-      return;
+      return
     }
-
     if (this.editId) {
       new ItemsService().childPath('post', 'User/UpdateUsers', { id: this.editId, ...data, collegeId: this.selectedCollege, isActive: true, courses: this.selectedCourse }).then((e) => {
         // window.alert(e.data.message)

@@ -58,6 +58,7 @@
                   <div class="form-group">
                     <input id="topicName" formControlName="topicName" name="topicName" #topicName type="text"
                       placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("topicName","Topic Name is required")}}</p>
                   </div>
                   <label>Description </label>
                   <!-- <div class="form-group">
@@ -79,6 +80,7 @@
                       No
                     </label>
                   </div> -->
+                  <br />
                   <label>Is Lock</label>
                   <div class="form-group">
                     <label>
@@ -89,6 +91,7 @@
                       <input type="radio" formControlName="isLock" [value]=false name="isLock">
                       No
                     </label>
+                    <p class="warn-text">{{getError("isLock","Lock is required")}}</p>
                   </div>
                   <!-- <label>File Path </label>
                   <div class="form-group">
@@ -99,11 +102,13 @@
                   <div class="form-group">
                     <input id="file" (change)="onFileSelected($event)" formControlName="file" name="file" #filePath
                       type="file" placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("file","Image is required")}}</p>
                   </div>
                   <label>AttachMents</label>
                   <div class="form-group">
                     <input id="attachMents" (change)="onFileSelected($event)" formControlName="attachMents"
                       name="attachMents" #attachMents type="file" placeholder="" class="form-control" multiple />
+                    <p class="warn-text">{{getError("attachMents","AttachMents is required")}}</p>
                   </div>
                   <button type="submit" class="btn btn-primary" rippleEffect>
                     Submit
@@ -114,7 +119,7 @@
             <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add New Record</span>
           </button>
 
-          <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right mr-1" rippleEffect>Export
+          <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right pt-1 mr-1" rippleEffect>Export
             CSV</a>
         </div>
         <div class="col-md-6 col-12">

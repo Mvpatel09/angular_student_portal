@@ -60,45 +60,48 @@
                 </button>
               </div>
               <div class="modal-body" tabindex="0" ngbAutofocus>
-                <form #userlogin="ngForm" (ngSubmit)="submit(userlogin.value)">
+                <form (ngSubmit)="submit()" [formGroup]="loginForm">
                   <label>Sub Topic Name</label>
-                  <div class="form-group">
-                    <input id="subTopicName" [(ngModel)]="initial.subTopicName" name="subTopicName" #subTopicName
+                  <div class=" form-group">
+                    <input id="subTopicName" formControlName="subTopicName" name="subTopicName" #subTopicName
                       type="text" placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("subTopicName","Sub-Topic Name is required")}}</p>
                   </div>
                   <label>Description </label>
                   <!-- <div class="form-group">
-                    <input id="description" [(ngModel)]="initial.description" name="description" #description
+                    <input id="description" formControlName="description" name="description" #description
                       type="text" placeholder="" class="form-control" />
                   </div> -->
-                  <ngx-quill [(ngModel)]="initial.description" #editor [modules]="modules"
+                  <ngx-quill formControlName="description" #editor [modules]="modules"
                     (change)="logChange($event);"></ngx-quill>
+                  <br />
                   <label>Active</label>
                   <div class="form-group">
                     <label>
-                      <input type="radio" [(ngModel)]="initial.isActive" [value]=true name="isActive"
-                        #genderControl="ngModel">
+                      <input type="radio" formControlName="isActive" [value]=true name="isActive">
                       Yes
                     </label>
                     <label>
-                      <input type="radio" [(ngModel)]="initial.isActive" [value]=false name="isActive"
-                        #genderControl="ngModel">
+                      <input type="radio" formControlName="isActive" [value]=false name="isActive">
                       No
                     </label>
+                    <p class="warn-text">{{getError("isActive","Active is required")}}</p>
                   </div>
                   <label>3D Image</label>
                   <div class="form-group">
-                    <input id="filePath" [(ngModel)]="initial.filePath" name="filePath" #filePath type="file"
+                    <input id="filePath" formControlName="filePath" name="filePath" #filePath type="file"
                       (change)="onFileSelected($event)" placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("filePath","3D Image is required")}}</p>
                   </div>
                   <label>Video</label>
                   <div class="form-group">
-                    <input id="file" (change)="onFileSelected($event)" [(ngModel)]="initial.file" name="file" #filePath
-                      type="file" placeholder="" class="form-control" />
+                    <input id="file" (change)="onFileSelected($event)" formControlName="file" name="file" type="file"
+                      placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("file","Video is required")}}</p>
                   </div>
                   <!-- <label>AttachMents</label>
                   <div class="form-group">
-                    <input id="attachMents" (change)="onFileSelected($event)" [(ngModel)]="initial.attachMents"
+                    <input id="attachMents" (change)="onFileSelected($event)" formControlName="attachMents"
                       name="attachMents" #attachMents type="file" placeholder="" class="form-control" multiple />
                   </div> -->
                   <button type="submit" class="btn btn-primary" rippleEffect>
@@ -110,7 +113,7 @@
             <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add New Record</span>
           </button>
 
-          <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right mr-1" rippleEffect>Export
+          <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right pt-1 mr-1" rippleEffect>Export
             CSV</a>
         </div>
         <div class="col-md-6 col-12">

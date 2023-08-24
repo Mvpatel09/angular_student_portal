@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ColumnMode, DatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 
 import { CoreTranslationService } from '@core/services/translation.service';
-
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { locale as german } from 'app/main/tables/subTopics/i18n/de';
 import { locale as english } from 'app/main/tables/subTopics/i18n/en';
 import { locale as french } from 'app/main/tables/subTopics/i18n/fr';
@@ -30,6 +30,7 @@ export class DatatablesComponent implements OnInit {
 
   // public
   @ViewChild('editor') editor;
+  public loginForm: FormGroup;
   public contentHeader: object;
   public rows: any;
   public selected = [];
@@ -75,6 +76,7 @@ export class DatatablesComponent implements OnInit {
   initial: any;
   file: any;
   filePath: any;
+  isSubmitted: boolean;
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
 
@@ -185,9 +187,15 @@ export class DatatablesComponent implements OnInit {
 
   modalOpenForm(modalForm, row?) {
     console.log(row)
+    this.loginForm.reset()
+    this.isSubmitted = false;
     if (row) {
       this.initial = row
       this.editId = row.id
+      this.editor = row.description
+      for (let key in this.loginForm.value) {
+        this.loginForm.get(key).setValue(row[key])
+      }
     } else {
       this.initial = {}
       this.editId = 0
@@ -205,22 +213,32 @@ export class DatatablesComponent implements OnInit {
     })
   }
 
-  submit(data) {
-    // window.alert(subjectName + description)
+  getError(k, message) {
+    const controlErrors: ValidationErrors = this.loginForm.get(k).errors;
+    if (controlErrors !== null && this.isSubmitted) {
+      return message;
+    }
+    return "";
+  }
+
+  submit(data = this.loginForm.value) {
     console.log(data)
-    // return
-    console.log(this.editId, this.initial, data)
+    // window.alert(subjectName + description)
+    this.isSubmitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    }
     if (this.editId) {
       let formData = new FormData();
       formData.append("file", this.file);
       // for (let i = 0; i < this.attachMents.length; i++) {
       //   formData.append("attachMents", this.attachMents[i] as any);
       // }
-      formData.append("filePath", this.filePath);
+      formData.append("imagePath", this.filePath);
       formData.append("id", this.editId.toString());
       formData.append("subTopicName", data.subTopicName);
       formData.append("description", this.editor);
-      formData.append("filePath", data.filePath);
+      // formData.append("filePath", data.filePath);
       formData.append("isActive", data.isActive);
       formData.append("topicId", this.selectedTopic);
       new ItemsService().childPath('post', 'Topic/UpdateSubTopics', formData).then((e) => {
@@ -234,10 +252,10 @@ export class DatatablesComponent implements OnInit {
       // for (let i = 0; i < this.attachMents.length; i++) {
       //   formData.append("attachMents", this.attachMents[i] as any);
       // }
-      formData.append("filePath", this.filePath);
+      formData.append("imagePath", this.filePath);
       formData.append("subTopicName", data.subTopicName);
       formData.append("description", this.editor);
-      formData.append("filePath", data.filePath);
+      // formData.append("filePath", data.filePath);
       formData.append("isActive", data.isActive);
       formData.append("topicId", this.selectedTopic);
       new ItemsService().childPath('post', 'Topic/AddSubTopics', formData).then((e) => {
@@ -378,7 +396,7 @@ export class DatatablesComponent implements OnInit {
    * @param {DatatablesService} _datatablesService
    * @param {CoreTranslationService} _coreTranslationService
    */
-  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private modalService: NgbModal) {
+  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private _formBuilder: FormBuilder, private modalService: NgbModal) {
     this._unsubscribeAll = new Subject();
     this._coreTranslationService.translate(english, french, german, portuguese);
   }
@@ -390,6 +408,13 @@ export class DatatablesComponent implements OnInit {
    * On init
    */
   ngOnInit() {
+    this.loginForm = this._formBuilder.group({
+      subTopicName: ['', Validators.required],
+      description: [''],
+      file: ['', Validators.required],
+      isActive: [true, Validators.required],
+      filePath: ['', Validators.required],
+    });
     this._datatablesService.getDataTableRows().then(response => {
       if (this.selectedCourse !== '' && this.selectedCollege !== '' && this.selectedSemester !== '' && this.selectedSubject && this.selectedChapter && this.selectedTopic) {
         this.initialData = response;
