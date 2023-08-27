@@ -29,6 +29,7 @@ export class DatatablesComponent implements OnInit {
   private tempData = [];
 
   // public
+  public imagePreview = 'assets/images/previewImage/previewImage.png'
   @ViewChild('editor') editor;
   public loginForm: FormGroup;
   public contentHeader: object;
@@ -170,10 +171,13 @@ export class DatatablesComponent implements OnInit {
     console.log(row)
     this.loginForm.reset()
     this.isSubmitted = false;
+    this.imagePreview = 'assets/images/previewImage/previewImage.png'
     if (row) {
       this.initial = row
       this.editId = row.id
       this.editor = row.description
+      this.imagePreview = this.imageUrl + '/' + row.filePath
+      this.loginForm.get('file').setValidators([])
       for (let key in this.loginForm.value) {
         this.loginForm.get(key).setValue(row[key])
       }
@@ -189,6 +193,9 @@ export class DatatablesComponent implements OnInit {
     if (event.target.files.length > 0) {
       console.log(event.target.files[0]);
       this.file = event.target.files[0]
+      const reader = new FileReader();
+      reader.onload = e => this.imagePreview = reader.result as any;
+      reader.readAsDataURL(this.file)
     }
   }
 

@@ -78,19 +78,23 @@
                     <input id="filePath" formControlName="filePath" name="filePath" #filePath type="text"
                       placeholder="" class="form-control" />
                   </div> -->
+                  <br />
                   <label>File</label>
+                  <br />
+                  <img [src]="this.imagePreview" class="image-preview" (click)="filePath.click()" />
                   <div class="form-group">
                     <input id="file" (change)="onFileSelected($event)" formControlName="file" name="file" #filePath
-                      type="file" placeholder="" class="form-control" />
+                      type="file" placeholder="" class="form-control" hidden />
                     <p class="warn-text">{{getError("file","File is required")}}</p>
                   </div>
                   <button type="submit" class="btn btn-primary" rippleEffect>
-                    Submit
+                    {{this.editId?'Edit
+                    Chapter':'Add Chapter'}}
                   </button>
                 </form>
               </div>
             </ng-template>
-            <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add New Record</span>
+            <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add Chapter</span>
           </button>
 
           <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right pt-1 mr-1" rippleEffect>Export
@@ -215,7 +219,7 @@
             </div>
           </ng-template>
         </ngx-datatable-column> -->
-        <ngx-datatable-column name="chapterName" prop="chapterName" [width]="120"></ngx-datatable-column>
+        <ngx-datatable-column name="chapterName" prop="chapterName" [width]="500"></ngx-datatable-column>
         <ngx-datatable-column name="description" prop="description" [width]="250">
           <ng-template let-description="value" ngx-datatable-cell-template>
             <div class="tooltip-container">
@@ -231,7 +235,7 @@
             </a>
           </ng-template>
         </ngx-datatable-column> -->
-        <ngx-datatable-column name="filePath" prop="filePath" [width]="120">
+        <ngx-datatable-column name="Image" prop="filePath" [width]="120">
           <ng-template let-filePath="value" ngx-datatable-cell-template>
             <img src="{{this.imageUrl+'/'+filePath}}" height="45" width="45" />
           </ng-template>
@@ -253,33 +257,33 @@
         <ngx-datatable-column name="Actions" [maxWidth]="100" [sortable]="false">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div class="d-flex align-items-center">
-              <div ngbDropdown container="body">
+              <!-- <div ngbDropdown container="body">
                 <a ngbDropdownToggle href="javascript:void(0);" class="hide-arrow" id="dropdownBrowserState"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i data-feather="more-vertical" class="text-primary cursor-pointer mr-50"></i>
-                </a>
-                <div ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownBrowserState">
-                  <!-- <a href="javascript:void(0)" ngbDropdownItem class="d-flex align-items-center"><i
+                </a> -->
+              <!-- <div ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownBrowserState"> -->
+              <!-- <a href="javascript:void(0)" ngbDropdownItem class="d-flex align-items-center"><i
                       data-feather="file-text" class="mr-50"></i> View</a> -->
-                  <a (click)="modalOpenForm(modalForm,row)" ngbDropdownItem class="d-flex align-items-center"><i
-                      data-feather="archive" class="mr-50"></i> Edit</a>
-                  <a (click)="modalOpenWarning(modalWarning,row.id)" ngbDropdownItem
-                    class="d-flex align-items-center"><i data-feather="trash-2" class="mr-50"></i> Delete</a>
+              <a (click)="modalOpenForm(modalForm,row)" class="d-flex align-items-center"><i data-feather="edit"
+                  class="mr-50"></i></a>
+              <a (click)="modalOpenWarning(modalWarning,row.id)" class="d-flex align-items-center"><i
+                  data-feather="trash-2" class="mr-50"></i></a>
+              <!-- </div> -->
+              <ng-template #modalWarning let-modal>
+                <div class="modal-header">
+                  <h5 class="modal-title" id="myModalLabel160">Are You Sure ?</h5>
                 </div>
-                <ng-template #modalWarning let-modal>
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel160">Are You Sure ?</h5>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" (click)="deleteData()" rippleEffect>
-                      Yes
-                    </button>
-                    <button type="button" class="btn btn-warning" (click)="modal.close('Accept click')" rippleEffect>
-                      No
-                    </button>
-                  </div>
-                </ng-template>
-              </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" (click)="deleteData()" rippleEffect>
+                    Yes
+                  </button>
+                  <button type="button" class="btn btn-warning" (click)="modal.close('Accept click')" rippleEffect>
+                    No
+                  </button>
+                </div>
+              </ng-template>
+              <!-- </div> -->
 
               <!-- <i data-feather="edit" class="text-primary cursor-pointer"></i> -->
             </div>

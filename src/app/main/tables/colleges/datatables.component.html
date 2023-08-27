@@ -57,12 +57,13 @@
                     </label>
                   </div> -->
                   <button type="submit" class="btn btn-primary" rippleEffect>
-                    Submit
+                    {{this.editId?'Edit
+                    College':'Add College'}}
                   </button>
                 </form>
               </div>
             </ng-template>
-            <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add New Record</span>
+            <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add College</span>
           </button>
 
           <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right pt-1 mr-1" rippleEffect>Export
@@ -188,9 +189,9 @@
           </ng-template>
         </ngx-datatable-column> -->
         <ngx-datatable-column name="name" prop="name" [width]="120"></ngx-datatable-column>
-        <ngx-datatable-column name="email" prop="email" [width]="120"></ngx-datatable-column>
+        <ngx-datatable-column name="email" prop="email" [width]="180"></ngx-datatable-column>
         <ngx-datatable-column name="contactDetails" prop="contactDetails" [width]="120"></ngx-datatable-column>
-        <ngx-datatable-column name="address" prop="address" [width]="250"></ngx-datatable-column>
+        <ngx-datatable-column name="address" prop="address" [width]="300"></ngx-datatable-column>
         <!-- <ngx-datatable-column name="Status" prop="isActive" [width]="120">
           <ng-template let-isActive="value" ngx-datatable-cell-template>
             <div class="badge badge-pill" [ngClass]="{
@@ -208,33 +209,33 @@
         <ngx-datatable-column name="Actions" [maxWidth]="100" [sortable]="false">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div class="d-flex align-items-center">
-              <div ngbDropdown container="body">
-                <a ngbDropdownToggle href="javascript:void(0);" class="hide-arrow" id="dropdownBrowserState"
+              <!-- <div ngbDropdown container="body"> -->
+              <!-- <a ngbDropdownToggle href="javascript:void(0);" class="hide-arrow" id="dropdownBrowserState"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i data-feather="more-vertical" class="text-primary cursor-pointer mr-50"></i>
-                </a>
-                <div ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownBrowserState">
-                  <!-- <a href="javascript:void(0)" ngbDropdownItem class="d-flex align-items-center"><i
+                </a> -->
+              <!-- <div ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownBrowserState"> -->
+              <!-- <a href="javascript:void(0)" ngbDropdownItem class="d-flex align-items-center"><i
                       data-feather="file-text" class="mr-50"></i> View</a> -->
-                  <a (click)="modalOpenForm(modalForm,row)" ngbDropdownItem class="d-flex align-items-center"><i
-                      data-feather="archive" class="mr-50"></i> Edit</a>
-                  <a (click)="modalOpenWarning(modalWarning,row.id)" ngbDropdownItem
-                    class="d-flex align-items-center"><i data-feather="trash-2" class="mr-50"></i> Delete</a>
+              <a (click)="modalOpenForm(modalForm,row)" class="d-flex align-items-center"><i data-feather="edit"
+                  class="mr-50"></i></a>
+              <a (click)="modalOpenWarning(modalWarning,row.id)" class="d-flex align-items-center"><i
+                  data-feather="trash-2" class="mr-50"></i></a>
+              <!-- </div> -->
+              <ng-template #modalWarning let-modal>
+                <div class="modal-header">
+                  <h5 class="modal-title" id="myModalLabel160">Are You Sure ?</h5>
                 </div>
-                <ng-template #modalWarning let-modal>
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel160">Are You Sure ?</h5>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" (click)="deleteData()" rippleEffect>
-                      Yes
-                    </button>
-                    <button type="button" class="btn btn-warning" (click)="modal.close('Accept click')" rippleEffect>
-                      No
-                    </button>
-                  </div>
-                </ng-template>
-              </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" (click)="deleteData()" rippleEffect>
+                    Yes
+                  </button>
+                  <button type="button" class="btn btn-warning" (click)="modal.close('Accept click')" rippleEffect>
+                    No
+                  </button>
+                </div>
+              </ng-template>
+              <!-- </div> -->
 
               <!-- <i data-feather="edit" class="text-primary cursor-pointer"></i> -->
             </div>

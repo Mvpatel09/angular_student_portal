@@ -138,7 +138,7 @@ export class DatatablesComponent implements OnInit {
 
     // filter our data
     const temp = this.tempData.filter(function (d) {
-      return d.subjectName.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.question.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
     // update the rows

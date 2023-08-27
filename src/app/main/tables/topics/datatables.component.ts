@@ -30,6 +30,10 @@ export class DatatablesComponent implements OnInit {
 
   // public
   @ViewChild('editor') editor;
+  public imagePreview = 'assets/images/previewImage/previewImage.png'
+  public imagePreviewAttachMents = 'assets/images/previewImage/previewImage.png'
+  public adminAttachMentsPre = ''
+  public collegeAttachMentsPre = ''
   public loginForm: FormGroup;
   public contentHeader: object;
   public rows: any;
@@ -74,7 +78,7 @@ export class DatatablesComponent implements OnInit {
   initial: any;
   file: any;
   isSubmitted: boolean;
-
+  collegeAttachMents: any;
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
 
@@ -140,7 +144,7 @@ export class DatatablesComponent implements OnInit {
 
     // filter our data
     const temp = this.tempData.filter(function (d) {
-      return d.subjectName.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.topicName.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
     // update the rows
@@ -162,9 +166,21 @@ export class DatatablesComponent implements OnInit {
     let { files, name } = event.target
     if (name === 'file' && files.length) {
       this.file = event.target.files[0]
+      const reader = new FileReader();
+      reader.onload = e => this.imagePreview = reader.result as any;
+      reader.readAsDataURL(this.file)
     }
     if (name === 'attachMents' && files.length) {
       this.attachMents = event.target.files
+      const reader = new FileReader();
+      reader.onload = e => this.imagePreviewAttachMents = reader.result as any;
+      reader.readAsDataURL(this.attachMents[0] as any)
+    }
+    if (name === 'collegeAttachMents' && files.length) {
+      this.collegeAttachMents = event.target.files[0]
+      // const reader = new FileReader();
+      // reader.onload = e => this.imagePreviewAttachMents = reader.result as any;
+      // reader.readAsDataURL(this.attachMents[0] as any)
     }
   }
 
@@ -192,19 +208,29 @@ export class DatatablesComponent implements OnInit {
     console.log(row)
     this.loginForm.reset()
     this.isSubmitted = false;
+    this.imagePreview = 'assets/images/previewImage/previewImage.png'
+    this.imagePreviewAttachMents = 'assets/images/previewImage/previewImage.png'
     if (row) {
       this.initial = row
       this.editId = row.id
+      this.loadAttachments(this.editId, modalForm)
       this.editor = row.description
+      this.imagePreview = this.imageUrl + '/' + row.filePath
+      // this.imagePreviewAttachMents = this.imageUrl + '/' + row.filePath
+      console.log(this.imageUrl + '/' + this.adminAttachMentsPre)
+      console.log(this.imageUrl + '/' + this.collegeAttachMentsPre)
+      this.loginForm.get('file').setValidators([])
+      this.loginForm.get('attachMents').setValidators([])
       for (let key in this.loginForm.value) {
         this.loginForm.get(key).setValue(row[key])
       }
     } else {
       this.initial = {}
       this.editId = 0
+      this.modalService.open(modalForm);
     }
 
-    this.modalService.open(modalForm);
+
   }
 
   deleteData() {
@@ -213,6 +239,18 @@ export class DatatablesComponent implements OnInit {
       // window.alert(e.data.message)
       this.ngOnInit()
       this.modalService.dismissAll()
+    })
+  }
+
+  loadAttachments(subTopicId, modalForm) {
+    new ItemsService().childPath('get', `Topic/GetTopicattachmentsByTopic?TopicId=${subTopicId}`).then((e) => {
+      this.collegeAttachMentsPre = e.data.data.table?.length && e.data.data.table[0].filePath as any
+      this.adminAttachMentsPre = e.data.data.table?.length && e.data.data.table[1].filePath as any
+      console.log(this.imageUrl + '/' + this.collegeAttachMentsPre)
+      console.log(this.imageUrl + '/' + this.adminAttachMentsPre)
+      this.modalService.open(modalForm)
+    }).catch((e) => {
+      this.modalService.open(modalForm)
     })
   }
 
@@ -225,9 +263,10 @@ export class DatatablesComponent implements OnInit {
     }
     if (this.editId) {
       let formData = new FormData();
-      for (let i = 0; i < this.attachMents.length; i++) {
+      for (let i = 0; i < this.attachMents?.length; i++) {
         formData.append("attachMents", this.attachMents[i] as any);
       }
+      formData.append("collegeAttachMents", this.collegeAttachMents);
       formData.append("file", this.file);
       formData.append("id", this.editId.toString());
       formData.append("topicName", data.topicName);
@@ -243,9 +282,10 @@ export class DatatablesComponent implements OnInit {
       })
     } else {
       let formData = new FormData();
-      for (let i = 0; i < this.attachMents.length; i++) {
+      for (let i = 0; i < this.attachMents?.length; i++) {
         formData.append("attachMents", this.attachMents[i] as any);
       }
+      formData.append("collegeAttachMents", this.collegeAttachMents);
       formData.append("file", this.file);
       formData.append("topicName", data.topicName);
       formData.append("description", this.editor);
@@ -398,6 +438,7 @@ export class DatatablesComponent implements OnInit {
       file: ['', Validators.required],
       isLock: [true, Validators.required],
       attachMents: ['', Validators.required],
+      collegeAttachMents: [''],
     });
     this._datatablesService.getDataTableRows().then(response => {
       if (this.selectedCourse !== '' && this.selectedCollege !== '' && this.selectedSemester !== '' && this.selectedSubject && this.selectedChapter) {

@@ -67,33 +67,38 @@
                 </button>
               </div>
               <div class="modal-body" tabindex="0" ngbAutofocus>
-                <form #userlogin="ngForm" (ngSubmit)="submit(userlogin.value)">
+                <form (ngSubmit)="submit()" [formGroup]="loginForm">
                   <label>Exam Name</label>
                   <div class="form-group">
                     <input id="name" formControlName="name" name="name" #name type="text" placeholder=""
                       class="form-control" />
+                    <p class="warn-text">{{getError("name","Name is required")}}</p>
                   </div>
 
                   <label>Mark Per Question</label>
                   <div class="form-group">
                     <input id="markPerQuestion" formControlName="markPerQuestion" name="markPerQuestion"
                       #markPerQuestion type="text" placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("markPerQuestion","Mark Per Question is required")}}</p>
                   </div>
                   <label>totalMarks</label>
                   <div class="form-group">
                     <input id="totalMarks" formControlName="totalMarks" name="totalMarks" #totalMarks type="text"
                       placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("totalMarks","Total Marks is required")}}</p>
                   </div>
                   <label>Total Exam Time (Minutes)</label>
                   <div class="form-group">
                     <input id="totalExamTimeInMinutes" formControlName="totalExamTimeInMinutes"
                       name="totalExamTimeInMinutes" #totalExamTimeInMinutes type="text" placeholder=""
                       class="form-control" />
+                    <p class="warn-text">{{getError("totalExamTimeInMinutes","Time is required")}}</p>
                   </div>
                   <label>Exam Time</label>
                   <div class="form-group">
                     <input id="examTime" formControlName="examTime" name="examTime" #examTime type="datetime-local"
                       placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("examTime","Exam Time is required")}}</p>
                   </div>
                   <!-- <label>Active</label>
                   <div class="form-group">

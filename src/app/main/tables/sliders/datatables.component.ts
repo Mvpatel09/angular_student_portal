@@ -16,6 +16,7 @@ import * as snippet from 'app/main/tables/sliders/datatables.snippetcode';
 import { DatatablesService } from 'app/main/tables/sliders/datatables.service';
 import { ItemsService } from 'app/service/config';
 import { environment } from 'environments/environment';
+import axios from 'axios';
 
 @Component({
   selector: 'app-datatables',
@@ -44,7 +45,9 @@ export class DatatablesComponent implements OnInit {
   public SelectionType = SelectionType;
   public exportCSVData;
   public payload = {};
-  public imageUrl = environment.apiUrl
+  public imageUrl = environment.apiUrl;
+  public isSubmitted = false;
+  public progress = 0;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -158,6 +161,7 @@ export class DatatablesComponent implements OnInit {
 
   modalOpenForm(modalForm, row?) {
     console.log(row)
+    this.isSubmitted = false
     if (row) {
       this.initial = row
       this.editId = row.id
@@ -190,6 +194,7 @@ export class DatatablesComponent implements OnInit {
     // window.alert(subjectName + description)
     console.log(data)
     // return
+    this.isSubmitted = true
     console.log(this.editId, this.initial, data)
     if (this.editId) {
       let formData = new FormData();
@@ -201,12 +206,12 @@ export class DatatablesComponent implements OnInit {
       formData.append("createdTime", new Date().toISOString() as any);
       formData.append("createdBy", 1 as any);
       formData.append("updatedBy", 1 as any);
-      new ItemsService().childPath('post', 'Slider/UpdateSliderDataSource', formData).then((e) => {
-        // window.alert(e.data.message)
-        this.ngOnInit()
-        this.modalService.dismissAll()
-      })
-    } else {
+      // new ItemsService().childPath('post', 'Slider/UpdateSliderDataSource', formData).then((e) => {
+      //   // window.alert(e.data.message)
+      //   this.ngOnInit()
+      //   this.modalService.dismissAll()
+      // })
+    } else if (this.file) {
       let formData = new FormData();
       formData.append("file", this.file);
       formData.append("id", 0 as any);
@@ -216,8 +221,19 @@ export class DatatablesComponent implements OnInit {
       formData.append("UpdatedTime", new Date().toISOString() as any);
       formData.append("createdBy", 1 as any);
       formData.append("updatedBy", 1 as any);
-      new ItemsService().childPath('post', 'Slider/InsertSliderDataSource', formData).then((e) => {
-        // window.alert(e.data.message)
+      // new ItemsService().childPath('post', 'Slider/InsertSliderDataSource', formData).then((e) => {
+      //   // window.alert(e.data.message)
+      //   this.ngOnInit()
+      //   this.modalService.dismissAll()
+      // })
+      axios.post(environment.apiUrl + '/Slider/InsertSliderDataSource', formData, {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('token')}`
+        },
+        onUploadProgress: progressEvent => {
+          this.progress = ((progressEvent.loaded / progressEvent.total) * 100).toFixed(2) as any
+        }
+      }).then((e) => {
         this.ngOnInit()
         this.modalService.dismissAll()
       })

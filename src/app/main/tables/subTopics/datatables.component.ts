@@ -16,6 +16,7 @@ import * as snippet from 'app/main/tables/subTopics/datatables.snippetcode';
 import { DatatablesService } from 'app/main/tables/subTopics/datatables.service';
 import { ItemsService } from 'app/service/config';
 import { environment } from 'environments/environment';
+import axios from 'axios';
 
 @Component({
   selector: 'app-datatables',
@@ -29,6 +30,10 @@ export class DatatablesComponent implements OnInit {
   private tempData = [];
 
   // public
+  public videoPreview = {
+    format: '',
+    url: ''
+  };
   @ViewChild('editor') editor;
   public loginForm: FormGroup;
   public contentHeader: object;
@@ -60,7 +65,8 @@ export class DatatablesComponent implements OnInit {
   public selectedTopic = '';
   public topicList: Array<{}>;
   public attachMents: Array<{}>;
-  public imageUrl = environment.apiUrl
+  public imageUrl = environment.apiUrl;
+  public progress = 0
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -142,7 +148,7 @@ export class DatatablesComponent implements OnInit {
 
     // filter our data
     const temp = this.tempData.filter(function (d) {
-      return d.subjectName.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.subTopicName.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
     // update the rows
@@ -164,6 +170,19 @@ export class DatatablesComponent implements OnInit {
     let { files, name } = event.target
     if (name === 'file' && files.length) {
       this.file = event.target.files[0]
+      var reader = new FileReader();
+      reader.readAsDataURL(this.file);
+      if (this.file.type.indexOf('video') > -1) {
+        this.videoPreview.format = 'video';
+      } else {
+        this.file = null;
+        this.loginForm.get('file').setValue('')
+        alert("Upload video file");
+      }
+      reader.onload = (event) => {
+        this.videoPreview.url = (<FileReader>event.target).result as any;
+      }
+      console.log(this.videoPreview)
     }
     if (name === 'attachMents' && files.length) {
       this.attachMents = event.target.files
@@ -189,10 +208,14 @@ export class DatatablesComponent implements OnInit {
     console.log(row)
     this.loginForm.reset()
     this.isSubmitted = false;
+    this.videoPreview.url = ''
     if (row) {
       this.initial = row
       this.editId = row.id
       this.editor = row.description
+      this.videoPreview.url = this.imageUrl + '/' + row.filePath
+      this.videoPreview.format = 'video'
+      this.loginForm.get('file').setValidators([])
       for (let key in this.loginForm.value) {
         this.loginForm.get(key).setValue(row[key])
       }
@@ -228,6 +251,7 @@ export class DatatablesComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
+
     if (this.editId) {
       let formData = new FormData();
       formData.append("file", this.file);
@@ -241,8 +265,14 @@ export class DatatablesComponent implements OnInit {
       // formData.append("filePath", data.filePath);
       formData.append("isActive", data.isActive);
       formData.append("topicId", this.selectedTopic);
-      new ItemsService().childPath('post', 'Topic/UpdateSubTopics', formData).then((e) => {
-        // window.alert(e.data.message)
+      axios.post(environment.apiUrl + '/Topic/UpdateSubTopics', formData, {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('token')}`
+        },
+        onUploadProgress: progressEvent => {
+          this.progress = ((progressEvent.loaded / progressEvent.total) * 100).toFixed(2) as any
+        }
+      }).then((e) => {
         this.ngOnInit()
         this.modalService.dismissAll()
       })
@@ -258,8 +288,13 @@ export class DatatablesComponent implements OnInit {
       // formData.append("filePath", data.filePath);
       formData.append("isActive", data.isActive);
       formData.append("topicId", this.selectedTopic);
-      new ItemsService().childPath('post', 'Topic/AddSubTopics', formData).then((e) => {
-        // window.alert(e.data.message)
+      axios.post(environment.apiUrl + '/Topic/AddSubTopics', formData, {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('token')}`
+        }, onUploadProgress: progressEvent => {
+          this.progress = ((progressEvent.loaded / progressEvent.total) * 100).toFixed(2) as any;
+        }
+      }).then((e) => {
         this.ngOnInit()
         this.modalService.dismissAll()
       })

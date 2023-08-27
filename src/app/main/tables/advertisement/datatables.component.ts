@@ -16,6 +16,7 @@ import * as snippet from 'app/main/tables/advertisement/datatables.snippetcode';
 import { DatatablesService } from 'app/main/tables/advertisement/datatables.service';
 import { ItemsService } from 'app/service/config';
 import { environment } from 'environments/environment';
+import axios from 'axios';
 
 @Component({
   selector: 'app-datatables',
@@ -45,7 +46,8 @@ export class DatatablesComponent implements OnInit {
   public exportCSVData;
   public payload = {};
   public imageUrl = environment.apiUrl
-
+  isSubmitted: boolean;
+  public progress = 0;
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
 
@@ -158,6 +160,7 @@ export class DatatablesComponent implements OnInit {
 
   modalOpenForm(modalForm, row?) {
     console.log(row)
+    this.isSubmitted = false;
     if (row) {
       this.initial = row
       this.editId = row.id
@@ -190,23 +193,31 @@ export class DatatablesComponent implements OnInit {
     // window.alert(subjectName + description)
     console.log(data)
     // return
+    this.isSubmitted = true
     console.log(this.editId, this.initial, data)
     if (this.editId) {
       let formData = new FormData();
       formData.append("file", this.file);
       formData.append("id", this.editId.toString());
-      formData.append("fileType", data.fileType);
-      new ItemsService().childPath('post', 'Slider/InsertAdvertiesDoc', formData).then((e) => {
-        // window.alert(e.data.message)
-        this.ngOnInit()
-        this.modalService.dismissAll()
-      })
-    } else {
+      formData.append("fileType", 'mp4');
+      // new ItemsService().childPath('post', 'Slider/InsertAdvertiesDoc', formData).then((e) => {
+      //   // window.alert(e.data.message)
+      //   this.ngOnInit()
+      //   this.modalService.dismissAll()
+      // })
+    } else if (this.file) {
       let formData = new FormData();
-      formData.append("fileType", data.fileType);
+      formData.append("fileType", 'mp4');
       formData.append("file", this.file);
-      new ItemsService().childPath('post', 'Slider/UpdateAdvertiesDoc', formData).then((e) => {
-        // window.alert(e.data.message)
+
+      axios.post(environment.apiUrl + '/Slider/UpdateAdvertiesDoc', formData, {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('token')}`
+        },
+        onUploadProgress: progressEvent => {
+          this.progress = ((progressEvent.loaded / progressEvent.total) * 100).toFixed(2) as any
+        }
+      }).then((e) => {
         this.ngOnInit()
         this.modalService.dismissAll()
       })

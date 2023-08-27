@@ -131,7 +131,7 @@ export class DatatablesComponent implements OnInit {
 
     // filter our data
     const temp = this.tempData.filter(function (d) {
-      return d.subjectName.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.name.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
     // update the rows
@@ -190,6 +190,7 @@ export class DatatablesComponent implements OnInit {
   }
 
   getError(k, message) {
+    console.log(this.loginForm, "maulik193")
     const controlErrors: ValidationErrors = this.loginForm.get(k).errors;
     if (controlErrors !== null && this.isSubmitted) {
       return message;
@@ -321,7 +322,7 @@ export class DatatablesComponent implements OnInit {
       userRoleId: ['', Validators.required],
       name: ['', Validators.required],
       userName: ['', Validators.required],
-      contactNo: ['', Validators.required],
+      contactNo: ['', [Validators.required, Validators.min(1000000000), Validators.max(9999999999)]],
       semesterId: ['', Validators.required],
     });
     this._datatablesService.getDataTableRows().then(response => {

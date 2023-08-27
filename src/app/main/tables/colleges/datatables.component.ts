@@ -121,10 +121,10 @@ export class DatatablesComponent implements OnInit {
    */
   filterUpdate(event) {
     const val = event.target.value.toLowerCase();
-
+    console.log(this.tempData)
     // filter our data
     const temp = this.tempData.filter(function (d) {
-      return d.subjectName.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.name.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
     // update the rows

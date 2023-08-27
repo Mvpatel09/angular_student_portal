@@ -53,12 +53,13 @@
                     </label>
                   </div> -->
                   <button type="submit" class="btn btn-primary" rippleEffect>
-                    Submit
+                    {{this.editId?'Edit
+                    Semester':'Add Semester'}}
                   </button>
                 </form>
               </div>
             </ng-template>
-            <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add New Record</span>
+            <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add Semester</span>
           </button>
 
           <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right pt-1 mr-1" rippleEffect>Export

@@ -128,8 +128,9 @@ export class DatatablesComponent implements OnInit {
     const val = event.target.value.toLowerCase();
 
     // filter our data
+    // console.log(this.tempData)
     const temp = this.tempData.filter(function (d) {
-      return d.subjectName.toLowerCase().indexOf(val) !== -1 || !val;
+      return (d.semester+"").indexOf(val) !== -1 || !val;
     });
 
     // update the rows

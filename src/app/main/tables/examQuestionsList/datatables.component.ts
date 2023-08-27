@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ColumnMode, DatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 
 import { CoreTranslationService } from '@core/services/translation.service';
-
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { locale as german } from 'app/main/tables/examQuestionsList/i18n/de';
 import { locale as english } from 'app/main/tables/examQuestionsList/i18n/en';
 import { locale as french } from 'app/main/tables/examQuestionsList/i18n/fr';
@@ -28,6 +28,7 @@ export class DatatablesComponent implements OnInit {
   private tempData = [];
 
   // public
+  public loginForm: FormGroup;
   public contentHeader: object;
   public rows: any;
   public selected = [];
@@ -77,6 +78,7 @@ export class DatatablesComponent implements OnInit {
   public _snippetCodeMultilangual = snippet.snippetCodeMultilangual;
   initial: any;
   editId: any;
+  isSubmitted: boolean;
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
@@ -174,20 +176,36 @@ export class DatatablesComponent implements OnInit {
   }
 
   modalOpenForm(modalForm, row?) {
-    function getKeyByValue(object, value) {
-      return Object.keys(object).find(key => object[key] === value);
-    }
-    if (row) {
-      this.initial = { ...row, selectedAns: getKeyByValue(row, row.ans) }
-      this.editId = row.id
-    } else {
-      this.initial = {}
-      this.editId = 0
-    }
+    this.loginForm.reset()
+    this.isSubmitted = false;
+    // function getKeyByValue(object, value) {
+    //   return Object.keys(object).find(key => object[key] === value);
+    // }
+    // if (row) {
+    //   this.initial = { ...row, selectedAns: getKeyByValue(row, row.ans) }
+    //   this.editId = row.id
+    // } else {
+    //   this.initial = {}
+    //   this.editId = 0
+    // }
     this.modalService.open(modalForm);
   }
 
-  submit(data) {
+  getError(k, message) {
+    const controlErrors: ValidationErrors = this.loginForm.get(k).errors;
+    if (controlErrors !== null && this.isSubmitted) {
+      return message;
+    }
+    return "";
+  }
+
+  submit(data = this.loginForm.value) {
+    console.log(data)
+    // window.alert(subjectName + description)
+    this.isSubmitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    }
     if (this.editId) {
       new ItemsService().childPath('post', 'Exam/UpdateExam', { id: this.editId, ...data, questionIds: this.selected.map((e) => e.id), semesterId: this.selectedSemester, addedByCollege: this.selectedCollege, AddedByUser: 0, isActive: true }).then((e) => {
         this.ngOnInit()
@@ -322,7 +340,7 @@ export class DatatablesComponent implements OnInit {
    * @param {DatatablesService} _datatablesService
    * @param {CoreTranslationService} _coreTranslationService
    */
-  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private modalService: NgbModal) {
+  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private _formBuilder: FormBuilder, private modalService: NgbModal) {
     this._unsubscribeAll = new Subject();
     this._coreTranslationService.translate(english, french, german, portuguese);
   }
@@ -334,7 +352,13 @@ export class DatatablesComponent implements OnInit {
    * On init
    */
   ngOnInit() {
-
+    this.loginForm = this._formBuilder.group({
+      name: ['', Validators.required],
+      markPerQuestion: ['', Validators.required],
+      totalMarks: ['', Validators.required],
+      totalExamTimeInMinutes: ['', Validators.required],
+      examTime: ['', Validators.required]
+    });
     if (this.selectedCollege === '') {
       this._datatablesService.getColleges('collegesList').then(response => {
         this.collegeList = response
