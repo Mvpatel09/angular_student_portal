@@ -15,6 +15,7 @@ import * as snippet from 'app/main/tables/courses/datatables.snippetcode';
 
 import { DatatablesService } from 'app/main/tables/courses/datatables.service';
 import { ItemsService } from 'app/service/config';
+import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
 
 @Component({
   selector: 'app-datatables',
@@ -47,6 +48,7 @@ export class DatatablesComponent implements OnInit {
   public initialData: any;
   public collegeList: Array<{}>;
   public selectedCollege = '';
+  public isAdmin = false;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -61,6 +63,7 @@ export class DatatablesComponent implements OnInit {
   initial: any;
   editId: any;
   isSubmitted: boolean;
+  currentUser: any;
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
@@ -265,7 +268,7 @@ export class DatatablesComponent implements OnInit {
    * @param {DatatablesService} _datatablesService
    * @param {CoreTranslationService} _coreTranslationService
    */
-  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private _formBuilder: FormBuilder, private modalService: NgbModal) {
+  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private _formBuilder: FormBuilder, private modalService: NgbModal, private _coreMenuService: CoreMenuService) {
     this._unsubscribeAll = new Subject();
     this._coreTranslationService.translate(english, french, german, portuguese);
   }
@@ -279,6 +282,17 @@ export class DatatablesComponent implements OnInit {
   ngOnInit() {
     this.loginForm = this._formBuilder.group({
       name: ['', Validators.required],
+    });
+
+    this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
+      this.currentUser = this._coreMenuService.currentUser;
+      console.log(this.currentUser, "maulik303")
+      if (this.currentUser.roleId === 1) {
+        this.isAdmin = true;
+      } else {
+        this.selectedCollege = this.currentUser.collegeId
+        this.isAdmin = false;
+      }
     });
 
     this._datatablesService.getDataTableRows().then(response => {

@@ -9,4 +9,6 @@ export class User {
   avatar: string;
   role: Role;
   token?: string;
+  roleId?: number;
+  collegeId?: number;
 }

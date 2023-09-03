@@ -52,6 +52,7 @@ export class DatatablesComponent implements OnInit {
   public selectedCollege = '';
   public selectedCourse = '';
   public selectedSemester = '';
+  public isAdmin = false;
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
 
@@ -223,7 +224,7 @@ export class DatatablesComponent implements OnInit {
 
   collegeOnChange({ name, value }) {
     console.log(name, value)
-    console.log(this.initialData, this.initialData.filter((e: any) => +e.collegeId === +value))
+
     this._datatablesService.getColleges('coursesList', `?CollegeId=${value}`).then((response) => {
       // let filter = this.initialData.filter((e) => +e.collegeId === +value)
       // this.tempData = filter
@@ -239,7 +240,7 @@ export class DatatablesComponent implements OnInit {
 
   coursesOnChange({ name, value }) {
     console.log(name, value)
-    this._datatablesService.getColleges('semesterList', `?CollegeId=${value}&CourseId=${value}`).then((response) => {
+    this._datatablesService.getColleges('semesterList', `?CollegeId=${this.selectedCollege}&CourseId=${value}`).then((response) => {
       // let filter = this.initialData.filter((e) => +e.collegeId === +this.selectedCollege && +e.courses === +value)
       // this.tempData = filter
       // this.kitchenSinkRows = filter;
@@ -323,7 +324,7 @@ export class DatatablesComponent implements OnInit {
       name: ['', Validators.required],
       userName: ['', Validators.required],
       contactNo: ['', [Validators.required, Validators.min(1000000000), Validators.max(9999999999)]],
-      semesterId: ['', Validators.required],
+      semesterId: [''],
     });
     this._datatablesService.getDataTableRows().then(response => {
       this.initialData = response;
@@ -332,17 +333,24 @@ export class DatatablesComponent implements OnInit {
       }
     });
 
-    this._datatablesService.getColleges('collegesList').then(response => {
-      this.collegeList = response
-    });
+    // this._datatablesService.getColleges('collegesList').then(response => {
+    //   this.collegeList = response
+    // });
 
     this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
       this.currentUser = this._coreMenuService.currentUser;
       console.log(this.currentUser, "maulik303")
-      if (this.currentUser.userRoleId === 1) {
-        // this._datatablesService.getColleges('collegesList').then(response => {
-        //   this.collegeList = response
-        // });
+      if (this.currentUser.roleId === 1) {
+        this._datatablesService.getColleges('collegesList').then(response => {
+          this.collegeList = response
+        });
+        this.isAdmin = true;
+      } else {
+        if (!this.selectedSemester) {
+          this.collegeOnChange({ name: "", value: this.currentUser.collegeId });
+          this.selectedCollege = this.currentUser.collegeId
+        }
+        this.isAdmin = false;
       }
     });
     // content header

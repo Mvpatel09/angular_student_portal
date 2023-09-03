@@ -43,15 +43,22 @@ export class CoreMenuComponent implements OnInit {
   ngOnInit(): void {
     // Set the menu either from the input or from the service
     this.menu = this.menu || this._coreMenuService.getCurrentMenu();
-
+    console.log(this.menu)
     // Subscribe to the current menu changes
     this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
       this.currentUser = this._coreMenuService.currentUser;
-      console.log(this.currentUser.userRoleId, "maulik50")
+      console.log(this.currentUser.roleId, "maulik50")
       // Load menu
-      this.menu = this._coreMenuService.getCurrentMenu();
+
+
 
       this._changeDetectorRef.markForCheck();
+      if (this.currentUser.roleId === 2) {
+        let title = ["Sliders", "Advertisement", "Colleges"]
+        this.menu = this.menu.map((e) => {
+          return { ...e, children: e.children.filter((e) => !title.includes(e.title)) };
+        })
+      }
     });
   }
 }

@@ -66,10 +66,10 @@ export class AuthenticationService {
               // password: '',
               firstName: user.userName,
               lastName: '',
-              avatar: 'avatar-s-11.jpg',
+              avatar: '',
               role: Role.Admin,
               token: user.tocken,
-              userRoleId: user.userRoleId
+              roleId: user.userRoleId
             }));
 
             // Display welcome toast!
@@ -89,9 +89,10 @@ export class AuthenticationService {
               password: 'admin',
               firstName: user.userName,
               lastName: '',
-              avatar: 'avatar-s-11.jpg',
+              avatar: '',
               role: Role.Admin,
-              token: user.tocken
+              token: user.tocken,
+              roleId: user.userRoleId
             });
           } else if (user && user.tocken && user.userRoleId === 2) {
             localStorage.setItem('token', user.tocken)
@@ -101,10 +102,11 @@ export class AuthenticationService {
               // password: '',
               firstName: user.userName,
               lastName: '',
-              avatar: 'avatar-s-11.jpg',
-              role: Role.User,
+              avatar: '',
+              role: Role.Admin,
               token: user.tocken,
-              userRoleId: user.userRoleId
+              roleId: user.userRoleId,
+              collegeId: user.collegeId
             }));
 
             // Display welcome toast!
@@ -118,15 +120,18 @@ export class AuthenticationService {
             }, 2500);
 
             // notify
+            console.log(user, "maulik122")
             this.currentUserSubject.next({
               id: user.userId,
               email,
               password: 'admin',
               firstName: user.userName,
               lastName: '',
-              avatar: 'avatar-s-11.jpg',
-              role: Role.User,
-              token: user.tocken
+              avatar: '',
+              role: Role.Admin,
+              token: user.tocken,
+              roleId: user.userRoleId,
+              collegeId: user.collegeId
             });
           }
           return user;

@@ -15,6 +15,7 @@ import * as snippet from 'app/main/tables/semesters/datatables.snippetcode';
 
 import { DatatablesService } from 'app/main/tables/semesters/datatables.service';
 import { ItemsService } from 'app/service/config';
+import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
 
 @Component({
   selector: 'app-datatables',
@@ -46,7 +47,7 @@ export class DatatablesComponent implements OnInit {
   public payload = {};
   public initialData: any;
   public collegeList: Array<{}>;
-  public selectedCollege = '';
+  public selectedCollege;
   public coursesList: Array<{}>;
   public selectedCourse = '';
 
@@ -63,6 +64,8 @@ export class DatatablesComponent implements OnInit {
   initial: any;
   editId: any;
   isSubmitted: boolean;
+  currentUser: import("f:/angular_student_portal/src/app/auth/models/user").User;
+  public isAdmin = false;
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
@@ -130,7 +133,7 @@ export class DatatablesComponent implements OnInit {
     // filter our data
     // console.log(this.tempData)
     const temp = this.tempData.filter(function (d) {
-      return (d.semester+"").indexOf(val) !== -1 || !val;
+      return (d.semester + "").indexOf(val) !== -1 || !val;
     });
 
     // update the rows
@@ -272,7 +275,7 @@ export class DatatablesComponent implements OnInit {
    * @param {DatatablesService} _datatablesService
    * @param {CoreTranslationService} _coreTranslationService
    */
-  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private _formBuilder: FormBuilder, private modalService: NgbModal) {
+  constructor(private _datatablesService: DatatablesService, private _coreTranslationService: CoreTranslationService, private _formBuilder: FormBuilder, private modalService: NgbModal, private _coreMenuService: CoreMenuService) {
     this._unsubscribeAll = new Subject();
     this._coreTranslationService.translate(english, french, german, portuguese);
   }
@@ -301,11 +304,27 @@ export class DatatablesComponent implements OnInit {
       }
     });
 
-    if (this.selectedCollege === '') {
-      this._datatablesService.getColleges('collegesList').then(response => {
-        this.collegeList = response
-      });
-    }
+    this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
+      this.currentUser = this._coreMenuService.currentUser;
+      console.log(this.currentUser, "maulik303")
+      if (this.currentUser.roleId === 1) {
+        this.isAdmin = true;
+        console.log(this.selectedCollege, "maulik312")
+        if (!this.selectedCollege) {
+          this._datatablesService.getColleges('collegesList').then(response => {
+            this.collegeList = response
+          });
+        }
+      } else {
+        this.selectedCollege = this.currentUser.collegeId
+        if (!this.selectedCourse) {
+          this.collegeOnChange({ name: "", value: this.currentUser.collegeId });
+        }
+        this.isAdmin = false;
+      }
+    });
+
+
 
     // content header
     this.contentHeader = {

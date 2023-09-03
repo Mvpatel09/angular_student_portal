@@ -8,7 +8,7 @@
       <!-- <core-card-snippet [snippetCode]="_snippetCodeKitchenSink"> -->
       <h4 class="card-title">Chapters</h4>
       <div class="row">
-        <div class="col-4 mb-50">
+        <div class="col-4 mb-50" *ngIf="this.isAdmin">
           <label>College</label>
           <select class="custom-select" name="CollegeId" id="CollegeId" (change)="collegeOnChange($event.target)"
             [(ngModel)]="selectedCollege">
