@@ -17,6 +17,7 @@ import * as snippet from 'app/main/tables/subjects/datatables.snippetcode';
 import { DatatablesService } from 'app/main/tables/subjects/datatables.service';
 import { ItemsService } from 'app/service/config';
 import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
+import { User } from 'app/auth/models';
 
 @Component({
   selector: 'app-datatables',
@@ -71,7 +72,7 @@ export class DatatablesComponent implements OnInit {
   public _snippetCodeResponsive = snippet.snippetCodeResponsive;
   public _snippetCodeMultilangual = snippet.snippetCodeMultilangual;
   isSubmitted: boolean;
-  currentUser: import("f:/angular_student_portal/src/app/auth/models/user").User;
+  currentUser: User;
   public isAdmin = false;
 
   // Public Methods

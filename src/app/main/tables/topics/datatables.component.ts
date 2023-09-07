@@ -17,6 +17,7 @@ import { DatatablesService } from 'app/main/tables/topics/datatables.service';
 import { ItemsService } from 'app/service/config';
 import { environment } from 'environments/environment';
 import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
+import { User } from 'app/auth/models';
 
 @Component({
   selector: 'app-datatables',
@@ -80,7 +81,7 @@ export class DatatablesComponent implements OnInit {
   file: any;
   isSubmitted: boolean;
   collegeAttachMents: any;
-  currentUser: import("f:/angular_student_portal/src/app/auth/models/user").User;
+  currentUser: User;
   public isAdmin = false;
   // Public Methods
   // -----------------------------------------------------------------------------------------------------

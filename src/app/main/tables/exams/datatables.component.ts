@@ -16,6 +16,7 @@ import * as snippet from 'app/main/tables/exams/datatables.snippetcode';
 import { DatatablesService } from 'app/main/tables/exams/datatables.service';
 import { ItemsService } from 'app/service/config';
 import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
+import { User } from 'app/auth/models';
 
 @Component({
   selector: 'app-datatables',
@@ -64,7 +65,7 @@ export class DatatablesComponent implements OnInit {
   initial: any;
   editId: any;
   initialData: any;
-  currentUser: import("f:/angular_student_portal/src/app/auth/models/user").User;
+  currentUser: User;
   public isAdmin = false;
 
   // Public Methods

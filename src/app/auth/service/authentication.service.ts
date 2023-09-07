@@ -61,7 +61,7 @@ export class AuthenticationService {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('token', user.tocken)
             localStorage.setItem('currentUser', JSON.stringify({
-              id: user.id,
+              id: user.userId,
               email,
               // password: '',
               firstName: user.userName,
@@ -97,7 +97,7 @@ export class AuthenticationService {
           } else if (user && user.tocken && user.userRoleId === 2) {
             localStorage.setItem('token', user.tocken)
             localStorage.setItem('currentUser', JSON.stringify({
-              id: user.id,
+              id: user.userId,
               email,
               // password: '',
               firstName: user.userName,
