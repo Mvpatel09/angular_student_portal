@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { User, Role } from 'app/auth/models';
 import { ToastrService } from 'ngx-toastr';
+import { ItemsService } from 'app/service/config';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -14,6 +15,7 @@ export class AuthenticationService {
 
   //private
   private currentUserSubject: BehaviorSubject<User>;
+  data: any;
 
   /**
    *
@@ -57,83 +59,94 @@ export class AuthenticationService {
       .pipe(
         map(user => {
           // login successful if there's a jwt token in the response
-          if (user && user.tocken && user.userRoleId === 1) {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('token', user.tocken)
-            localStorage.setItem('currentUser', JSON.stringify({
-              id: user.userId,
-              email,
-              // password: '',
-              firstName: user.userName,
-              lastName: '',
-              avatar: '',
-              role: Role.Admin,
-              token: user.tocken,
-              roleId: user.userRoleId
-            }));
+          localStorage.setItem('token', user.tocken)
+          new ItemsService().childPath('get', `User/GetUserById?UserId=${user.userId}`).then(response => {
+            this.data = response.data.data.table.length ? response.data.data.table[0] : {};
+            // this.avatarImage = this.imageUrl + '/' + this.data.profilePath
+            // this.onSettingsChanged.next(this.data);
+            // for (let key in this.loginForm.value) {
+            //   this.loginForm.get(key).setValue(this.data[key])
+            // }
+            if (user && user.tocken && user.userRoleId === 1) {
+              // store user details and jwt token in local storage to keep user logged in between page refreshes
 
-            // Display welcome toast!
-            setTimeout(() => {
-              this._toastrService.success(
-                'You have successfully logged in as an Admin'
-                ,
-                '👋 Welcome, ' + '!',
-                { toastClass: 'toast ngx-toastr', closeButton: true }
-              );
-            }, 2500);
+              // localStorage.setItem('token', user.tocken)
+              localStorage.setItem('currentUser', JSON.stringify({
+                id: user.userId,
+                email,
+                // password: '',
+                firstName: user.userName,
+                lastName: '',
+                avatar: environment.apiUrl + '/' + this.data.profilePath,
+                role: Role.Admin,
+                token: user.tocken,
+                roleId: user.userRoleId
+              }));
 
-            // notify
-            this.currentUserSubject.next({
-              id: user.userId,
-              email,
-              password: 'admin',
-              firstName: user.userName,
-              lastName: '',
-              avatar: '',
-              role: Role.Admin,
-              token: user.tocken,
-              roleId: user.userRoleId
-            });
-          } else if (user && user.tocken && user.userRoleId === 2) {
-            localStorage.setItem('token', user.tocken)
-            localStorage.setItem('currentUser', JSON.stringify({
-              id: user.userId,
-              email,
-              // password: '',
-              firstName: user.userName,
-              lastName: '',
-              avatar: '',
-              role: Role.Admin,
-              token: user.tocken,
-              roleId: user.userRoleId,
-              collegeId: user.collegeId
-            }));
+              // Display welcome toast!
+              setTimeout(() => {
+                this._toastrService.success(
+                  'You have successfully logged in as an Admin'
+                  ,
+                  '👋 Welcome, ' + '!',
+                  { toastClass: 'toast ngx-toastr', closeButton: true }
+                );
+              }, 2500);
 
-            // Display welcome toast!
-            setTimeout(() => {
-              this._toastrService.success(
-                'You have successfully logged in as an Organization'
-                ,
-                '👋 Welcome, ' + '!',
-                { toastClass: 'toast ngx-toastr', closeButton: true }
-              );
-            }, 2500);
+              // notify
+              this.currentUserSubject.next({
+                id: user.userId,
+                email,
+                password: 'admin',
+                firstName: user.userName,
+                lastName: '',
+                avatar: environment.apiUrl + '/' + this.data.profilePath,
+                role: Role.Admin,
+                token: user.tocken,
+                roleId: user.userRoleId
+              });
+            } else if (user && user.tocken && user.userRoleId === 2) {
 
-            // notify
-            console.log(user, "maulik122")
-            this.currentUserSubject.next({
-              id: user.userId,
-              email,
-              password: 'admin',
-              firstName: user.userName,
-              lastName: '',
-              avatar: '',
-              role: Role.Admin,
-              token: user.tocken,
-              roleId: user.userRoleId,
-              collegeId: user.collegeId
-            });
-          }
+              localStorage.setItem('currentUser', JSON.stringify({
+                id: user.userId,
+                email,
+                // password: '',
+                firstName: user.userName,
+                lastName: '',
+                avatar: environment.apiUrl + '/' + this.data.profilePath,
+                role: Role.Admin,
+                token: user.tocken,
+                roleId: user.userRoleId,
+                collegeId: user.collegeId
+              }));
+
+              // Display welcome toast!
+              setTimeout(() => {
+                this._toastrService.success(
+                  'You have successfully logged in as an Organization'
+                  ,
+                  '👋 Welcome, ' + '!',
+                  { toastClass: 'toast ngx-toastr', closeButton: true }
+                );
+              }, 2500);
+
+              // notify
+              console.log(user, "maulik122")
+              this.currentUserSubject.next({
+                id: user.userId,
+                email,
+                password: 'admin',
+                firstName: user.userName,
+                lastName: '',
+                avatar: environment.apiUrl + '/' + this.data.profilePath,
+                role: Role.Admin,
+                token: user.tocken,
+                roleId: user.userRoleId,
+                collegeId: user.collegeId
+              });
+            }
+          })
+
           return user;
         })
       );

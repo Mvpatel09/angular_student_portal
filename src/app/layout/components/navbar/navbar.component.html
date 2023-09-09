@@ -72,8 +72,8 @@
             <span class="user-name font-weight-bolder">{{ this.currentUser.firstName }} {{ this.currentUser.lastName
               }}</span><span class="user-status">{{ this.currentUser.role }}</span>
           </div>
-          <span class="avatar"><img class="round" src="assets/images/portrait/small/{{ this.currentUser.avatar }}"
-              alt="avatar" height="40" width="40" /><span class="avatar-status-online"></span></span>
+          <span class="avatar"><img class="round" src="{{ this.currentUser.avatar }}" alt="avatar" height="40"
+              width="40" /><span class="avatar-status-online"></span></span>
         </ng-container>
       </a>
       <div ngbDropdownMenu aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-right">

@@ -104,7 +104,21 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       formData.append('userId', this.data.id)
       formData.append('file', event.target.files[0])
       new ItemsService().childPath('post', `User/UpdateUserProfile`, formData).then(response => {
+        this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
+          this.currentUser = this._coreMenuService.currentUser;
+          new ItemsService().childPath('get', `User/GetUserById?UserId=${this.currentUser.id}`).then(response => {
+            this.data = response.data.data.table.length ? response.data.data.table[0] : {};
+            const userData = JSON.parse(localStorage.getItem('currentUser'));
+            this.avatarImage = this.imageUrl + '/' + this.data.profilePath
+            localStorage.setItem('currentUser', JSON.stringify({ ...userData, avatar: this.avatarImage }))
+            this.onSettingsChanged.next(this.data);
+            for (let key in this.loginForm.value) {
+              this.loginForm.get(key).setValue(this.data[key])
+            }
+          })
+        });
         alert('Profile updated')
+        window.location.reload()
       })
     }
   }
@@ -128,9 +142,9 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     if (this.changePasswordForm.invalid) {
       return
     }
-    // new ItemsService().childPath('post', 'User/AddUsers', { ...this.data, ...data }).then((e) => {
-    //   this.ngOnInit()
-    // })
+    new ItemsService().childPath('post', `User/UpdateUsers`, { ...JSON.parse(localStorage.getItem('currentUser')), password: data.newPassword }).then(response => {
+      alert('Password updated')
+    })
 
   }
 
@@ -159,7 +173,9 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       this.currentUser = this._coreMenuService.currentUser;
       new ItemsService().childPath('get', `User/GetUserById?UserId=${this.currentUser.id}`).then(response => {
         this.data = response.data.data.table.length ? response.data.data.table[0] : {};
+        const userData = JSON.parse(localStorage.getItem('currentUser'));
         this.avatarImage = this.imageUrl + '/' + this.data.profilePath
+        localStorage.setItem('currentUser', JSON.stringify({ ...userData, avatar: this.avatarImage }))
         this.onSettingsChanged.next(this.data);
         for (let key in this.loginForm.value) {
           this.loginForm.get(key).setValue(this.data[key])
