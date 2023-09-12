@@ -142,7 +142,8 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     if (this.changePasswordForm.invalid) {
       return
     }
-    new ItemsService().childPath('post', `User/UpdateUsers`, { ...JSON.parse(localStorage.getItem('currentUser')), password: data.newPassword }).then(response => {
+    const { id } = JSON.parse(localStorage.getItem('currentUser'))
+    new ItemsService().childPath('post', `User/UpdateUsers`, { oldPasswordd: data.oldPasswordd, password: data.newPassword, id, contactNo: null, email: null, name: null, userName: null, userRoleId: null }).then(response => {
       alert('Password updated')
     })
 
