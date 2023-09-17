@@ -35,15 +35,18 @@
           </button>
         </div>
         <div class="col-1.5 mb-50">
-          <button class="btn btn-primary ml-1 mt-2" (click)="file.click()" rippleEffect>
+          <button [disabled]="!selectedSemester" class="btn btn-primary ml-1 mt-2" (click)="file.click()" rippleEffect>
             <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Import</span>
             <input type="file" hidden #file (change)="csvUpload($event)" />
           </button>
         </div>
         <div class="col-1.5 mb-50">
+          <a class="btn btn-outline-secondary float-right pt-1 ml-1 mt-2"
+            href="{{this.csvUrl+'/Resource/Student/ImportStudentSheet.xlsx'}}" target="_blank">sample</a>
+        </div>
+        <div class="col-1.5 mb-50">
           <a csvLink [data]="exportCSVData" class="btn btn-outline-secondary float-right pt-1 ml-1 mt-2"
-            rippleEffect>Export
-            CSV</a>
+            rippleEffect>Export</a>
         </div>
         <div class="col-12 mb-50">
 

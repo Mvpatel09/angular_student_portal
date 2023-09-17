@@ -361,7 +361,8 @@ export class DatatablesComponent implements OnInit {
       markPerQuestion: ['', Validators.required],
       totalMarks: ['', Validators.required],
       totalExamTimeInMinutes: ['', Validators.required],
-      examTime: ['', Validators.required]
+      examTime: ['', Validators.required],
+      examEndTime: ['', Validators.required]
     });
     if (this.selectedCollege === '') {
       this._datatablesService.getColleges('collegesList').then(response => {

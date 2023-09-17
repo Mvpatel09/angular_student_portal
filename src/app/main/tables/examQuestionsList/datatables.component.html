@@ -100,6 +100,12 @@
                       placeholder="" class="form-control" />
                     <p class="warn-text">{{getError("examTime","Exam Time is required")}}</p>
                   </div>
+                  <label>End Time</label>
+                  <div class="form-group">
+                    <input id="examEndTime" formControlName="examEndTime" name="examEndTime" #examEndTime
+                      type="datetime-local" placeholder="" class="form-control" />
+                    <p class="warn-text">{{getError("examEndTime","Exam End Time is required")}}</p>
+                  </div>
                   <!-- <label>Active</label>
                   <div class="form-group">
                     <label>

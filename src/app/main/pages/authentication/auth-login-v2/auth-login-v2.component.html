@@ -12,13 +12,13 @@
         <form class="auth-login-form mt-2" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <h2 class="card-title font-weight-bold mb-1 mt-2">Login</h2>
-            <label for="login-email" class="form-label">Email</label>
-            <input type="text" formControlName="email" class="form-control" placeholder="john@example.com"
-              aria-describedby="login-email" tabindex="1" autofocus
-              [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-              <div *ngIf="f.email.errors.required">Email is required</div>
-              <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+            <label for="login-mobile" class="form-label">Mobile No.</label>
+            <input type="text" formControlName="mobile" class="form-control" placeholder="Mobile"
+              aria-describedby="login-mobile" tabindex="1" autofocus
+              [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }" />
+            <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+              <div *ngIf="f.mobile.errors.required">mobile is required</div>
+              <div *ngIf="f.mobile.errors.mobile">Mobile must be a valid mobile</div>
             </div>
           </div>
 

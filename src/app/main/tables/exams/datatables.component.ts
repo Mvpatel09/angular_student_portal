@@ -165,13 +165,9 @@ export class DatatablesComponent implements OnInit {
 
   modalOpenForm(modalForm, row?) {
     console.log(row)
-    if (row) {
-      this.initial = row
-      this.editId = row.id
-    } else {
-      this.initial = {}
-      this.editId = 0
-    }
+    new ItemsService().childPath('get', `Exam/GetAllUserPrevExamResult?ExamId=${row.id}`).then((e) => {
+
+    })
 
     this.modalService.open(modalForm);
   }

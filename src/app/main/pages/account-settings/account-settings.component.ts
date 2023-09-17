@@ -143,8 +143,10 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       return
     }
     const { id } = JSON.parse(localStorage.getItem('currentUser'))
-    new ItemsService().childPath('post', `User/UpdateUsers`, { oldPasswordd: data.oldPasswordd, password: data.newPassword, id, contactNo: null, email: null, name: null, userName: null, userRoleId: null }).then(response => {
+    new ItemsService().childPath('post', `User/UpdateUserPassword`, { oldPassword: data.oldPassword, newPassword: data.newPassword, userId: id }).then(response => {
       alert('Password updated')
+    }).catch((e) => {
+      alert('Old password is wrong.')
     })
 
   }

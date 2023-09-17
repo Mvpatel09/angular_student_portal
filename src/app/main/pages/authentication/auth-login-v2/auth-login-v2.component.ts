@@ -86,11 +86,15 @@ export class AuthLoginV2Component implements OnInit {
     // Login
     this.loading = true;
     this._authenticationService
-      .login(this.f.email.value, this.f.password.value)
+      .login(this.f.mobile.value, this.f.password.value)
       // .pipe(first())
       .subscribe(
         data => {
-          this._router.navigate([this.returnUrl]);
+          console.log(this.returnUrl, "maulik93")
+          setTimeout(() => {
+            this._router.navigate([this.returnUrl]);
+          }, 3000)
+
         },
         error => {
           this.error = error;
@@ -107,7 +111,7 @@ export class AuthLoginV2Component implements OnInit {
    */
   ngOnInit(): void {
     this.loginForm = this._formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      mobile: ['', [Validators.required, Validators.min(1000000000), Validators.max(9999999999)]],
       password: ['', Validators.required]
     });
 

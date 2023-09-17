@@ -15,6 +15,7 @@ import * as snippet from 'app/main/tables/userManagement/datatables.snippetcode'
 import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
 import { DatatablesService } from 'app/main/tables/userManagement/datatables.service';
 import { ItemsService } from 'app/service/config';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-datatables',
@@ -53,6 +54,7 @@ export class DatatablesComponent implements OnInit {
   public selectedCourse = '';
   public selectedSemester = '';
   public isAdmin = false;
+  public csvUrl = environment.apiUrl + '/';
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
 
@@ -296,7 +298,18 @@ export class DatatablesComponent implements OnInit {
   }
 
   csvUpload(e) {
-    console.log(e.target.files[0])
+    const { id } = JSON.parse(localStorage.getItem('currentUser'));
+    let formData = new FormData();
+    formData.append("files", e.target.files[0]);
+    formData.append("coursesId", this.selectedCourse);
+    formData.append("collegeId", this.selectedCollege);
+    formData.append("createdBy", id);
+    formData.append("semesterId", this.selectedSemester);
+    new ItemsService().childPath('post', 'User/ImportStudentDataFile', formData).then((e) => {
+      // window.alert(e.data.message)
+      this.ngOnInit()
+    })
+    e.target.value = null;
   }
 
   /**
