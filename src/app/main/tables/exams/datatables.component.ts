@@ -51,7 +51,7 @@ export class DatatablesComponent implements OnInit {
   public selectedCourse = '';
   public selectedSemester = '';
   public semesterList: Array<{}>;
-
+  public userExamList: Array<{}>;
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
 
@@ -67,6 +67,7 @@ export class DatatablesComponent implements OnInit {
   initialData: any;
   currentUser: User;
   public isAdmin = false;
+  userExamListUserWise: any;
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
@@ -166,10 +167,18 @@ export class DatatablesComponent implements OnInit {
   modalOpenForm(modalForm, row?) {
     console.log(row)
     new ItemsService().childPath('get', `Exam/GetAllUserPrevExamResult?ExamId=${row.id}`).then((e) => {
-
+      this.userExamList = e.data.data.table
+      this.modalService.open(modalForm);
     })
 
-    this.modalService.open(modalForm);
+
+  }
+
+  modalOpenFormExam(modalForm, row?) {
+    new ItemsService().childPath('get', `Exam/GetExamHistoryResultByUser?ExamId=${row.examId}&userId=${row.userId}`).then((e) => {
+      this.userExamListUserWise = e.data.data.table
+      this.modalService.open(modalForm);
+    })
   }
 
   collegeOnChange({ name, value }) {

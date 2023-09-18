@@ -182,6 +182,31 @@
                 <div ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="dropdownBrowserState"> -->
               <!-- <a href="javascript:void(0)" ngbDropdownItem class="d-flex align-items-center"><i
                       data-feather="file-text" class="mr-50"></i> View</a> -->
+              <ng-template #examDetails let-modal>
+                <div class="modal-header">
+                  <!-- <h4 class="modal-title" id="myModalLabel1">Add Chapter</h4> -->
+                  <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" tabindex="0" ngbAutofocus>
+                  <ngx-datatable [rows]="userExamListUserWise" [rowHeight]="58" class="bootstrap core-bootstrap"
+                    [limit]="10" [columnMode]="ColumnMode.force" [headerHeight]="40" [footerHeight]="50"
+                    [scrollbarH]="true" [selectionType]="SelectionType.checkbox" [limit]="basicSelectedOption"
+                    (activate)="onActivate($event)" (select)="onSelect($event)">
+                    <ngx-datatable-column name="question" prop="question" [width]="250"></ngx-datatable-column>
+                    <ngx-datatable-column name="a" prop="a" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="b" prop="b" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="c" prop="c" [width]="250"></ngx-datatable-column>
+                    <ngx-datatable-column name="d" prop="d" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="ans" prop="ans" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="userAnswer" prop="userAnswer" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="isRight" prop="isRight" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="description" prop="description" [width]="120"></ngx-datatable-column>
+                  </ngx-datatable>
+                </div>
+              </ng-template>
+
               <ng-template #modalForm let-modal>
                 <div class="modal-header">
                   <!-- <h4 class="modal-title" id="myModalLabel1">Add Chapter</h4> -->
@@ -190,13 +215,26 @@
                   </button>
                 </div>
                 <div class="modal-body" tabindex="0" ngbAutofocus>
-                  TEST
+                  <ngx-datatable [rows]="userExamList" [rowHeight]="58" class="bootstrap core-bootstrap" [limit]="10"
+                    [columnMode]="ColumnMode.force" [headerHeight]="40" [footerHeight]="50" [scrollbarH]="true"
+                    [selectionType]="SelectionType.checkbox" [limit]="basicSelectedOption"
+                    (activate)="onActivate($event)" (select)="onSelect($event)">
+                    <ngx-datatable-column name="userName" prop="userName" [width]="250"></ngx-datatable-column>
+                    <ngx-datatable-column name="totalMark" prop="totalMark" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="result" prop="result" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="View" [width]="120">
+                      <ng-template let-row="row" ngx-datatable-cell-template>
+                        <a (click)="modalOpenFormExam(examDetails,row)" class="d-flex align-items-center"><i
+                            data-feather="file-text" class="mr-50"></i></a>
+                      </ng-template>
+                    </ngx-datatable-column>
+                  </ngx-datatable>
                 </div>
               </ng-template>
               <a (click)="modalOpenForm(modalForm,row)" class="d-flex align-items-center"><i data-feather="file-text"
                   class="mr-50"></i></a>
-              <a (click)="modalOpenWarning(modalWarning,row.id)" class="d-flex align-items-center"><i
-                  data-feather="trash-2" class="mr-50"></i></a>
+              <!-- <a (click)="modalOpenWarning(modalWarning,row.id)" class="d-flex align-items-center"><i
+                  data-feather="trash-2" class="mr-50"></i></a> -->
               <!-- </div> -->
               <ng-template #modalWarning let-modal>
                 <div class="modal-header">
