@@ -213,12 +213,28 @@ export class DatatablesComponent implements OnInit {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()
+      }).catch((e) => {
+        if (e?.response?.data?.message && e?.response?.data?.message?.includes("UNIQUE KEY")) {
+          const mes = e?.response?.data?.message.split(".");
+          alert(mes[3])
+        } else {
+          alert("Something went wrong")
+        }
+
       })
     } else {
       new ItemsService().childPath('post', 'User/AddUsers', { ...data, collegeId: this.selectedCollege, isActive: true, semesterId: this.selectedSemester, courses: this.selectedCourse }).then((e) => {
         // window.alert(e.data.message)
         this.ngOnInit()
         this.modalService.dismissAll()
+      }).catch((e) => {
+        if (e?.response?.data?.message && e?.response?.data?.message?.includes("UNIQUE KEY")) {
+          const mes = e?.response?.data?.message.split(".");
+          alert(mes[3])
+        } else {
+          alert("Something went wrong")
+        }
+
       })
     }
 

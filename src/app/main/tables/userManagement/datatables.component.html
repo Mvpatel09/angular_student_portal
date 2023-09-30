@@ -12,6 +12,7 @@
           <label>College</label>
           <select class="custom-select" name="CollegeId" id="CollegeId" (change)="collegeOnChange($event.target)"
             [(ngModel)]="selectedCollege">
+            <option value="">Select</option>
             <option *ngFor="let option of collegeList" [value]="option.id">{{option.name}}</option>
           </select>
         </div>
@@ -19,6 +20,7 @@
           <label>Courses</label>
           <select class="custom-select" name="CourseId" id="CourseId" (change)="coursesOnChange($event.target)"
             [(ngModel)]="selectedCourse" [disabled]="!coursesList?.length">
+            <option value="">Select</option>
             <option *ngFor="let option of coursesList" [value]="option.id">{{option.name}}</option>
           </select>
         </div>
@@ -26,11 +28,13 @@
           <label>Semester</label>
           <select class="custom-select" name="SemId" id="SemId" (change)="semesterOnChange($event.target)"
             [(ngModel)]="selectedSemester" [disabled]="!semesterList?.length">
+            <option value="">Select</option>
             <option *ngFor="let option of semesterList" [value]="option.id">{{option.semester}}</option>
           </select>
         </div>
         <div class="col-1.5 mb-50">
-          <button class="btn btn-primary ml-1 mt-2" rippleEffect (click)="modalOpenForm(modalForm)">
+          <button class="btn btn-primary ml-1 mt-2" [disabled]="!selectedSemester" rippleEffect
+            (click)="modalOpenForm(modalForm)">
             <i data-feather="plus" class="mr-0 mr-sm-1"></i><span class="d-none d-sm-inline-block">Add User</span>
           </button>
         </div>

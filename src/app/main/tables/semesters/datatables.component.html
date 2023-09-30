@@ -12,6 +12,7 @@
           <label>College</label>
           <select class="custom-select" name="CollegeId" id="CollegeId" (change)="collegeOnChange($event.target)"
             [(ngModel)]="selectedCollege">
+            <option value="">Select</option>
             <option *ngFor="let option of collegeList" [value]="option.id">{{option.name}}</option>
           </select>
         </div>
@@ -19,6 +20,7 @@
           <label>Courses</label>
           <select class="custom-select" name="CollegeId" id="CollegeId" (change)="coursesOnChange($event.target)"
             [(ngModel)]="selectedCourse">
+            <option value="">Select</option>
             <option *ngFor="let option of coursesList" [value]="option.id">{{option.name}}</option>
           </select>
         </div>

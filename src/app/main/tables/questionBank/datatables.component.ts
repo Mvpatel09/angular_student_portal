@@ -59,7 +59,7 @@ export class DatatablesComponent implements OnInit {
   public subjectList: Array<{}>;
   public selectedChapter = '';
   public chapterList: Array<{}>;
-  public selectedTopic = 0;
+  public selectedTopic = '';
   public topicList: Array<{}>;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
@@ -227,6 +227,8 @@ export class DatatablesComponent implements OnInit {
       this.selectedCourse = ''
       this.selectedSemester = ''
       this.selectedSubject = ''
+      this.selectedChapter = ''
+      this.selectedTopic = ''
       this.subjectList = []
       this.semesterList = []
       this.tempData = []
@@ -274,7 +276,7 @@ export class DatatablesComponent implements OnInit {
   chapterOnChange({ name, value }) {
     this._datatablesService.getColleges('topicsList', `?CollegeId=${this.selectedCollege}&CourseId=${this.selectedCourse}&SemId=${this.selectedSemester}&SubId=${this.selectedSubject}&ChapId=${value}`).then((response) => {
       this.topicList = response
-      this.selectedTopic = 0
+      this.selectedTopic = ''
       this.tempData = []
       this.kitchenSinkRows = [];
       this.exportCSVData = [];
