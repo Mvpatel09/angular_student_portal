@@ -2,7 +2,7 @@
   <div class="content-body">
     <div class="row match-height" *ngIf="isAdmin || isClient">
       <!-- Medal Card -->
-      <div class="col-xl-4 col-md-6 col-12">
+      <!-- <div class="col-xl-4 col-md-6 col-12">
         <div class="card card-congratulation-medal">
           <div class="card-body">
             <h5>{{ 'SAMPLE.CONGRATULATIONS' | translate }} 🎉 {{ currentUser?.firstName }}!</h5>
@@ -14,21 +14,21 @@
             <img src="assets/images/illustration/badge.svg" class="congratulation-medal" alt="Medal Pic" />
           </div>
         </div>
-      </div>
+      </div> -->
       <!--/ Medal Card -->
 
       <!-- Statistics Card -->
-      <div class="col-xl-8 col-md-6 col-12">
+      <div class="col-xl-6 col-md-6 col-12" *ngFor="let data of this.allReport">
         <div class="card card-statistics">
           <div class="card-header">
-            <h4 class="card-title">Statistics</h4>
+            <h4 class="card-title">{{data?.collegeName}}</h4>
             <div class="d-flex align-items-center">
-              <p class="card-text font-small-2 mr-25 mb-0">Updated 1 month ago</p>
+              <h5 class="card-text  mr-25 mb-0"><b>course:</b> {{data.coursesName}}</h5>
             </div>
           </div>
           <div class="card-body statistics-body">
             <div class="row">
-              <div class="col-sm-6 col-xl-3 mb-2 mb-xl-0">
+              <div class="col-sm-6 col-xl-4 mb-2 mb-xl-0">
                 <div class="media">
                   <div class="avatar bg-light-primary mr-2">
                     <div class="avatar-content">
@@ -36,12 +36,12 @@
                     </div>
                   </div>
                   <div class="media-body my-auto">
-                    <h4 class="font-weight-bolder mb-0">{{ data.statistics.analyticsData.sales }}</h4>
-                    <p class="card-text font-small-3 mb-0">Sales</p>
+                    <h4 class="font-weight-bolder mb-0">{{data.totalStudent}}</h4>
+                    <p class="card-text font-small-3 mb-0">Student</p>
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-xl-3 mb-2 mb-xl-0">
+              <div class="col-sm-6 col-xl-4 mb-2 mb-xl-0">
                 <div class="media">
                   <div class="avatar bg-light-info mr-2">
                     <div class="avatar-content">
@@ -49,12 +49,12 @@
                     </div>
                   </div>
                   <div class="media-body my-auto">
-                    <h4 class="font-weight-bolder mb-0">{{ data.statistics.analyticsData.customers }}</h4>
-                    <p class="card-text font-small-3 mb-0">Customers</p>
+                    <h4 class="font-weight-bolder mb-0">{{data.totalStaff}}</h4>
+                    <p class="card-text font-small-3 mb-0">Staff</p>
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-xl-3 mb-2 mb-sm-0">
+              <div class="col-sm-6 col-xl-4 mb-2 mb-sm-0">
                 <div class="media">
                   <div class="avatar bg-light-danger mr-2">
                     <div class="avatar-content">
@@ -62,12 +62,12 @@
                     </div>
                   </div>
                   <div class="media-body my-auto">
-                    <h4 class="font-weight-bolder mb-0">{{ data.statistics.analyticsData.products }}</h4>
-                    <p class="card-text font-small-3 mb-0">Products</p>
+                    <h4 class="font-weight-bolder mb-0">{{data.total}}</h4>
+                    <p class="card-text font-small-3 mb-0">Total</p>
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-xl-3">
+              <!-- <div class="col-sm-6 col-xl-3">
                 <div class="media">
                   <div class="avatar bg-light-success mr-2">
                     <div class="avatar-content">
@@ -75,11 +75,11 @@
                     </div>
                   </div>
                   <div class="media-body my-auto">
-                    <h4 class="font-weight-bolder mb-0">{{ data.statistics.analyticsData.revenue }}</h4>
+                    <h4 class="font-weight-bolder mb-0">0</h4>
                     <p class="card-text font-small-3 mb-0">Revenue</p>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>

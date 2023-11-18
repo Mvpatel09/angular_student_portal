@@ -88,7 +88,7 @@ export class AuthenticationService {
                 this._toastrService.success(
                   'You have successfully logged in as an Admin'
                   ,
-                  '👋 Welcome, ' + '!',
+                  '👋 Welcome to M & R Education' + '!',
                   { toastClass: 'toast ngx-toastr', closeButton: true }
                 );
               }, 2500);
@@ -125,7 +125,7 @@ export class AuthenticationService {
                 this._toastrService.success(
                   'You have successfully logged in as an Organization'
                   ,
-                  '👋 Welcome, ' + '!',
+                  '👋 Welcome to M & R Education, ' + '!',
                   { toastClass: 'toast ngx-toastr', closeButton: true }
                 );
               }, 2500);

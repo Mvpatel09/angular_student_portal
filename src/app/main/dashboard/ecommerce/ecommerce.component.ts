@@ -12,6 +12,7 @@ import { locale as english } from 'app/main/dashboard/i18n/en';
 import { locale as french } from 'app/main/dashboard/i18n/fr';
 import { locale as german } from 'app/main/dashboard/i18n/de';
 import { locale as portuguese } from 'app/main/dashboard/i18n/pt';
+import { ItemsService } from 'app/service/config';
 
 @Component({
   selector: 'app-ecommerce',
@@ -50,6 +51,7 @@ export class EcommerceComponent implements OnInit {
   public stateDangerChartoptions;
   public earningChartoptions;
   public isMenuToggled = false;
+  public allReport = [];
 
   // Private
   private $barColor = '#f3f3f3';
@@ -687,6 +689,10 @@ export class EcommerceComponent implements OnInit {
     });
   }
 
+
+
+
+
   /**
    * After View Init
    */
@@ -708,6 +714,12 @@ export class EcommerceComponent implements OnInit {
             this.revenueReportChartoptions.chart.width = this.revenueReportChartRef?.nativeElement.offsetWidth;
             this.budgetChartoptions.chart.width = this.budgetChartRef?.nativeElement.offsetWidth;
             this.goalChartoptions.chart.width = this.goalChartRef?.nativeElement.offsetWidth;
+
+            new ItemsService().childPath('get', 'User/GetTotalOfUsers').then(({ data }) => {
+              this.allReport = data.data.table;
+              console.log(this.allReport)
+            })
+
           }
         }, 500);
       }

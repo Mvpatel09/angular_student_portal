@@ -22,7 +22,7 @@ $gray-800: #1e1e1e !default; // $gray-dark
 $gray-900: #2a2e30 !default;
 $black: #22292f !default; // 231f48 22292f
 
-$purple: #7367f0 !default; //$primary
+$purple: hsl(32.2deg 68.91% 46.67%) !default; //$primary
 $green: #28c76f !default; //$success
 $blue: #00cfe8 !default; //$info
 $orange: #ff9f43 !default; //$warning
@@ -81,7 +81,7 @@ $spacers: map-merge((0: 0,
 // Body
 //
 // Settings for the `<body>` element.
-$body-bg: #f8f8f8 !default;
+$body-bg: #68686824 !default;
 $body-color: #6e6b7b !default;
 
 // Links
